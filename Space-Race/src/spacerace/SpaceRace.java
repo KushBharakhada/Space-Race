@@ -1,5 +1,7 @@
 package spacerace;
 
+import spacerace.gui.GUIFrame;
+
 /**
  * SpaceRace.java
  *
@@ -7,8 +9,6 @@ package spacerace;
  *
  * @author Kush Bharakhada and James March
  */
-
-import spacerace.gui.GUIFrame;
 
 public class SpaceRace {
 	
