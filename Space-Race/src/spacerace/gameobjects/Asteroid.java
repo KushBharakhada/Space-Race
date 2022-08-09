@@ -16,28 +16,27 @@ public class Asteroid {
 	
 	// Instance variables
 	
-	private static final int ASTEROID_SIZE = 15;
+	public static final int ASTEROID_SIZE = 15;
 	// Starting position of asteroids
 	private double xCoordinate;
 	private double yCoordinate;
 	// Increment determines speed of asteroids
-	private double xIncrement;
+	private int xIncrement;
 	// Whether asteroid spawned on the left or right of screen
 	private double spawnSide;
 	// Lifetime of an asteroid - number of frames it has for the motion
-	private double steps;
 	
 	// Constructor
-	public Asteroid() {
+	public Asteroid(int speed) {
 		xCoordinate = spawnLeftOrRight();
 		spawnSide = xCoordinate;
 		yCoordinate = randomYCoordinate();
-		xIncrement = 1;
-		steps = (GUIFrame.GAME_WIDTH / xIncrement) + ASTEROID_SIZE;
+		xIncrement = speed;
 	}
 	
-	public double getSteps() {
-		return this.steps;
+	public int getAsteroidSpeed() {
+		// Speed horizontally is determined by the xIncrement
+		return this.xIncrement;
 	}
 	
 	public double randomYCoordinate() {
@@ -68,6 +67,6 @@ public class Asteroid {
 			xCoordinate += xIncrement;
 		else
 			xCoordinate -= xIncrement;
-	}   
+	}
 	
 }

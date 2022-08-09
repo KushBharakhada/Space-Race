@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import spacerace.gameobjects.Asteroid;
+import spacerace.gameobjects.AsteroidRunnable;
 
 /**
  * GUIPanel.java
@@ -25,40 +26,36 @@ public class GUIPanel extends JPanel {
         setLayout(null);
     }
 	
-	public void addAsteroid(Asteroid a) {
-		// Adds an asteroid to the array list
-		asteroids.add(a);
-	}
-	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
 		// Goes through all the asteroids that have been added
 		for (Asteroid a : asteroids) {
 			g2d.fill(a.drawAsteroid());
-		}	
-	}
-		
-	public void launchAsteroid() {
-		try {
-			// Create an asteroid object
-			Asteroid asteroid = new Asteroid();
-			this.addAsteroid(asteroid);
-			
-			// Movement of the asteroid, horizontally
-			for (int i = 1; i <= asteroid.getSteps() ; i++) {
-	            asteroid.move();
-	            this.paint(this.getGraphics());
-	            Thread.sleep(10);
-	         }	
-		}
-		catch (InterruptedException e) {
-			e.printStackTrace();
 		}
 	}
 	
+	public void add(Asteroid a) {
+		asteroids.add(a);
+	}
+	
+	public void populateAsteroids(int speed) {
+		// Creates an asteroid object and adds to the array list
+		Asteroid a = new Asteroid(speed);
+        asteroids.add(a);		
+	}
+	
+	public void launchAsteroid() {
+		// Starts a new thread for each new asteroid
+	    Runnable r = new AsteroidRunnable(asteroids.get(0), this);
+	    Thread t = new Thread(r);
+	    t.start(); 
+	}
+	
 	public void launchGame() {
-		launchAsteroid();
+	    populateAsteroids(1);
+	    launchAsteroid();
+	    System.out.println("Number of active threads: " + Thread.activeCount());
 	}
 		
 }
