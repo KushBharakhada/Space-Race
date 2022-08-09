@@ -19,7 +19,6 @@ public class AsteroidRunnable implements Runnable {
 		try {	
 			// Number of frames the asteroid has so asteroid doesn't travel forever
 			int steps = (GUIFrame.GAME_WIDTH / asteroid.getAsteroidSpeed()) + Asteroid.ASTEROID_SIZE;
-			System.out.println(steps);
 			
 			// Movement of the asteroid, horizontally
 			for (int i = 1; i <= steps ; i++) {
@@ -34,8 +33,5 @@ public class AsteroidRunnable implements Runnable {
 		}
 	
 	}
-	
-	
-	
 
 }
