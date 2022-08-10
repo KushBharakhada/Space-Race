@@ -54,10 +54,6 @@ public class GUIPanel extends JPanel implements KeyListener {
 		
 	}
 	
-	public void createPlayer(int x, int y) {
-		player = new Player(400, 500);
-	}
-	
 	public void launchAsteroid(int speed) {
 		// Creating an asteroid object
 		Asteroid a = new Asteroid(speed);
@@ -76,8 +72,7 @@ public class GUIPanel extends JPanel implements KeyListener {
 	}
 	
 	public void launchGame() {
-		createPlayer(400, 300);
-		
+		player = new Player(400, 500);
 		// Infinitely produces asteroids
 		while (true) {
 		    launchAsteroid(1);

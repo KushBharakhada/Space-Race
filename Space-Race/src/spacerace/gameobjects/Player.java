@@ -36,6 +36,8 @@ public class Player {
 		this.y = y;
 	}
 	
+	
+	//borders are a bit weird because the player appears to be drawn at a strange position (not border)
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
 			this.y = (y > 0) ? this.y -= SPEED : this.y;
