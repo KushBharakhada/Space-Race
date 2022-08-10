@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import spacerace.gameobjects.Asteroid;
 import spacerace.gameobjects.AsteroidRunnable;
 import spacerace.gameobjects.Player;
+import spacerace.gameobjects.Target;
 
 /**
  * GUIPanel.java
@@ -32,6 +33,7 @@ public class GUIPanel extends JPanel implements KeyListener {
 	private ArrayList<Asteroid> asteroids = new ArrayList<>();
 	private ArrayList<Thread> threads = new ArrayList<>();
 	private Player player;
+	private Target target;
 
 	public GUIPanel() {
 		this.setBackground(Color.BLACK);
@@ -41,8 +43,9 @@ public class GUIPanel extends JPanel implements KeyListener {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
-
 		player.draw(g);
+		g2d.setColor(Color.YELLOW);
+		g2d.fill(target.drawTarget());
 		// Control access of multiple threads to the array list
 		synchronized(asteroids) {
 			// Goes through all the asteroids that have been added
@@ -56,6 +59,10 @@ public class GUIPanel extends JPanel implements KeyListener {
 	
 	public void createPlayer(int x, int y) {
 		player = new Player(400, 525);
+	}
+	
+	public void createTarget(int x, int y) {
+		target = new Target(x, y);
 	}
 	
 	public void launchAsteroid(int speed) {
@@ -86,6 +93,7 @@ public class GUIPanel extends JPanel implements KeyListener {
 	
 	public void launchGame() {
 		createPlayer(400, 300);
+		createTarget(200, 200);		
 		
 		// Infinitely produces asteroids
 		while (true) {
