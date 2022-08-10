@@ -1,7 +1,5 @@
 package spacerace.gui;
 
-import java.awt.event.KeyAdapter;
-
 import javax.swing.*;
 
 /**

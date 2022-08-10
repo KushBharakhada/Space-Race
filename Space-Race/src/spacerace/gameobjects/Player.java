@@ -2,6 +2,7 @@ package spacerace.gameobjects;
 
 import java.awt.*;
 import java.awt.event.*;
+import spacerace.gui.GUIFrame;
 
 
 /**
@@ -23,8 +24,8 @@ public class Player {
 	
 	int x;
 	int y;
-	int width = 25;
-	int height = 25;
+	int width = 20;
+	int height = 20;
 	Color color = Color.red;
 	
 	final double SPEED = 5; //how fast player should move
@@ -35,18 +36,22 @@ public class Player {
 		this.y = y;
 	}
 	
+	
+	//borders are a bit weird because the player appears to be drawn at a strange position (not border)
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			this.y -= SPEED;
+			this.y = (y > 0) ? this.y -= SPEED : this.y;
 		}
 		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			this.y += SPEED;
+			this.y = (y < GUIFrame.GAME_HEIGHT - this.height*3) 
+					? this.y += SPEED : this.y;
 		}
 		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			this.x -= SPEED;
+			this.x = (x > 0) ? this.x -= SPEED : this.x;
 		}
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			this.x += SPEED;
+			this.x = (x < GUIFrame.GAME_WIDTH - this.width*1.8) 
+				? this.x += SPEED : this.x;
 		}
 	}
 	

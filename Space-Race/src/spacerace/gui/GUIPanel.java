@@ -64,7 +64,7 @@ public class GUIPanel extends JPanel implements KeyListener {
 	public void createTarget(int x, int y) {
 		target = new Target(x, y);
 	}
-	
+
 	public void launchAsteroid(int speed) {
 		// Creating an asteroid object
 		Asteroid a = new Asteroid(speed);
@@ -82,19 +82,10 @@ public class GUIPanel extends JPanel implements KeyListener {
 	    t.start(); 
 	}
 	
-	/*
-	public class AL extends KeyAdapter{
-		@Override
-		public void keyPressed(KeyEvent e){
-			player.keyPressed(e);
-		}
-	}
-	*/
-	
 	public void launchGame() {
-		createPlayer(400, 300);
 		createTarget(200, 200);		
-		
+		player = new Player(400, 500);
+
 		// Infinitely produces asteroids
 		while (true) {
 		    launchAsteroid(1);
