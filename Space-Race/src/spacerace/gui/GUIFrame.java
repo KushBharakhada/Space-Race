@@ -25,13 +25,13 @@ public class GUIFrame extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Space Race");
         GUIPanel panel = new GUIPanel();
+        panel.addKeyListener(panel);
+        panel.setFocusable(true);
         this.add(panel);  
         this.setSize(GAME_WIDTH, GAME_HEIGHT);
         this.setVisible(true);
-        this.addKeyListener(new AL());
         panel.launchGame();
     }
-	
 	
 
 }

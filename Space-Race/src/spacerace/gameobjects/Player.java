@@ -16,20 +16,17 @@ public class Player {
 	
 	int x;
 	int y;
-	int width;
-	int height;
-	Color color;
+	int width = 25;
+	int height = 25;
+	Color color = Color.red;
 	
-	final double SPEED = 10; //how fast player should move
+	final double SPEED = 5; //how fast player should move
 	 Object keyPressed;
 	
-	//constructor 
-	public Player(int x, int y, int width, int height, Color color){
+	//constructor, params are coords of where to spawn player
+	public Player(int x, int y){
 		this.x = x;
 		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.color = color;
 	}
 	
 	public void keyPressed(KeyEvent e) {
