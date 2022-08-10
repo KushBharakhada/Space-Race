@@ -28,7 +28,7 @@ public class GUIFrame extends JFrame {
         this.add(panel);  
         this.setSize(GAME_WIDTH, GAME_HEIGHT);
         this.setVisible(true);
-        this.addKeyListener(new AL());
+        //this.addKeyListener(new AL());
         panel.launchGame();
     }
 	

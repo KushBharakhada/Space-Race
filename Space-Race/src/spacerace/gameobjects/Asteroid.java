@@ -24,7 +24,6 @@ public class Asteroid {
 	private int xIncrement;
 	// Whether asteroid spawned on the left or right of screen
 	private double spawnSide;
-	// Lifetime of an asteroid - number of frames it has for the motion
 	
 	// Constructor
 	public Asteroid(int speed) {

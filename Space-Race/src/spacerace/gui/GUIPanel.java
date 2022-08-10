@@ -31,7 +31,6 @@ public class GUIPanel extends JPanel {
 	private ArrayList<Asteroid> asteroids = new ArrayList<>();
 	private Player player;
 
-
 	public GUIPanel() {
 		this.setBackground(Color.BLACK);
         setLayout(null);
@@ -90,12 +89,12 @@ public class GUIPanel extends JPanel {
 		while (true) {
 		    launchAsteroid(1);
 		    try {
+		    	// How often the asteroids are launched
 				Thread.sleep(200);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		    System.out.println(Thread.activeCount());
-		    //System.out.println(asteroids.size());
+		    System.out.println(asteroids.size());
 		}
 	}
 	

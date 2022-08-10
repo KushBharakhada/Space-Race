@@ -2,6 +2,14 @@ package spacerace.gameobjects;
 
 import java.awt.Component;
 
+/**
+ * AsteroidRunnable.java
+ *
+ * Implements runnable to use for multi-threading.
+ *
+ * @author Kush Bharakhada and James March
+ */
+
 import spacerace.gui.GUIFrame;
 
 public class AsteroidRunnable implements Runnable {
