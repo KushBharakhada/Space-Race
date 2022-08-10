@@ -12,24 +12,27 @@ import java.awt.event.*;
  * @author Kush Bharakhada and James March
  */
 
+//TODO make player movement smooth (use timer for KeyPressed and KeyReleased)
+//TODO add diagonal movement (8 directions is all u can get with keyboard)
+//TODO add borders to player movement (can't go off screen)
+//TODO Implement Lives
+//TODO Implement collision detection
+//TODO implement game over when you run out of lives
+
 public class Player {
 	
 	int x;
 	int y;
-	int width;
-	int height;
-	Color color;
+	int width = 25;
+	int height = 25;
+	Color color = Color.red;
 	
-	final double SPEED = 10; //how fast player should move
-	 Object keyPressed;
+	final double SPEED = 5; //how fast player should move
 	
-	//constructor 
-	public Player(int x, int y, int width, int height, Color color){
+	//constructor, params are coords of where to spawn player
+	public Player(int x, int y){
 		this.x = x;
 		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.color = color;
 	}
 	
 	public void keyPressed(KeyEvent e) {

@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -23,7 +24,7 @@ import spacerace.gameobjects.Player;
 
 // TODO Arraylist grows too large, dead thread asteroids need removing
 
-public class GUIPanel extends JPanel {
+public class GUIPanel extends JPanel implements KeyListener {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -53,7 +54,7 @@ public class GUIPanel extends JPanel {
 	}
 	
 	public void createPlayer(int x, int y) {
-		player = new Player(x, y, 100, 100, Color.red);
+		player = new Player(400, 525);
 	}
 	
 	public void launchAsteroid(int speed) {
@@ -97,6 +98,21 @@ public class GUIPanel extends JPanel {
 		    System.out.println(asteroids.size());
 		}
 	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+        
+    }
+	
+	@Override
+    public void keyPressed(KeyEvent e) {
+        player.keyPressed(e);
+    }
+	
+	@Override
+    public void keyReleased(KeyEvent e) {
+        
+    }
 	
 		
 }
