@@ -84,29 +84,29 @@ public class GUIPanel extends JPanel implements KeyListener {
 	
 	public void launchGame() {
 		createTarget(200, 200);		
-		player = new Player(400, 500);
-		Boolean start = false;
+		player = new Player(GUIFrame.GAME_WIDTH/2, GUIFrame.GAME_HEIGHT-100); //created player at bottom of screen
+		Boolean start = false; //checks whether an asteroid has been created
 
-		// Infinitely produces asteroids
+		//for the start of the game, need to ensure an asteroid spawns
 		while (true) {
-			if (start) {
+			if (start) { //once an asteroid has spawned, can start quick generation of asteroids
+				// Infinitely produces asteroids when game is started
 				if (RNG(20) == 0) {
 					launchAsteroid(1);
 				}
 			}
-			else {
+			else { //otherwise create one asteroid so the program doesnt break when checking.isAlive and start game
 				launchAsteroid(1);
 				start = true;
 			}
 		    try {
 		    	
 		    	// How often the asteroids are launched
-				Thread.sleep(8);
+				Thread.sleep(8); //the lower this number, harder the game
 		    	player.setXCoord(player.getXCoord() + player.getXSpeed());
 				player.setYCoord(player.getYCoord() + player.getYSpeed());
 				player.checkOutOfBounds();
 				
-
 				// Remove a dead thread from the threads array list
 				// and the corresponding asteroid that has finished its journey
 				if (!threads.get(0).isAlive()) {
