@@ -22,7 +22,7 @@ import spacerace.gameobjects.Player;
  * @author Kush Bharakhada and James March
  */
 
-// TODO Arraylist grows too large, dead thread asteroids need removing
+// TODO Concurrent modification error needs fixing
 
 public class GUIPanel extends JPanel implements KeyListener {
 	
@@ -30,6 +30,7 @@ public class GUIPanel extends JPanel implements KeyListener {
 	
 	// Instance Variables
 	private ArrayList<Asteroid> asteroids = new ArrayList<>();
+	private ArrayList<Thread> threads = new ArrayList<>();
 	private Player player;
 
 	public GUIPanel() {
@@ -70,12 +71,12 @@ public class GUIPanel extends JPanel implements KeyListener {
 		// Starts a new thread for each new asteroid
 	    Runnable r = new AsteroidRunnable(a, this);
 	    Thread t = new Thread(r);
+	    threads.add(t);
 	    t.start(); 
 	}
 	
 	public void launchGame() {
 		createPlayer(400, 300);
-		
 		
 		// Infinitely produces asteroids
 		while (true) {
@@ -83,10 +84,15 @@ public class GUIPanel extends JPanel implements KeyListener {
 		    try {
 		    	// How often the asteroids are launched
 				Thread.sleep(200);
+				// Remove a dead thread from the threads array list
+				// and the corresponding asteroid that has finished its journey
+				if (!threads.get(0).isAlive()) {
+					threads.remove(0);
+					asteroids.remove(0);
+				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		    System.out.println(asteroids.size());
 		}
 	}
 
