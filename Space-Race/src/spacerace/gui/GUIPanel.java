@@ -3,11 +3,14 @@ package spacerace.gui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import spacerace.gameobjects.Asteroid;
 import spacerace.gameobjects.AsteroidRunnable;
+import spacerace.gameobjects.Player;
 
 /**
  * GUIPanel.java
@@ -26,6 +29,7 @@ public class GUIPanel extends JPanel {
 	
 	// Instance Variables
 	private ArrayList<Asteroid> asteroids = new ArrayList<>();
+	private Player player;
 
 	public GUIPanel() {
 		this.setBackground(Color.BLACK);
@@ -35,11 +39,17 @@ public class GUIPanel extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
+		player.draw(g);
 		// Goes through all the asteroids that have been added
 		for (Asteroid a : asteroids) {
 			g2d.setColor(Color.GRAY);
 			g2d.fill(a.drawAsteroid());
 		}
+		
+	}
+	
+	public void createPlayer(int x, int y) {
+		player = new Player(x, y, 100, 100, Color.red);
 	}
 	
 	public void add(Asteroid a) {
@@ -57,7 +67,17 @@ public class GUIPanel extends JPanel {
 	    t.start(); 
 	}
 	
+	public class AL extends KeyAdapter{
+		@Override
+		public void keyPressed(KeyEvent e){
+			player.keyPressed(e);
+		}
+	}
+	
 	public void launchGame() {
+		createPlayer(400, 300);
+		
+		
 		// Infinitely produces asteroids
 		while (true) {
 		    launchAsteroid(1);
@@ -70,6 +90,8 @@ public class GUIPanel extends JPanel {
 		    System.out.println(asteroids.size());
 		}
 	}
+	
+	
 	
 	
 	// Testing Threads

@@ -1,6 +1,10 @@
 package spacerace.gui;
 
+import java.awt.event.KeyAdapter;
+
 import javax.swing.*;
+
+import spacerace.gui.GUIPanel.AL;
 
 /**
  * GUIFrame.java
@@ -26,7 +30,10 @@ public class GUIFrame extends JFrame {
         this.add(panel);  
         this.setSize(GAME_WIDTH, GAME_HEIGHT);
         this.setVisible(true);
+        this.addKeyListener(new AL());
         panel.launchGame();
     }
+	
+	
 
 }
