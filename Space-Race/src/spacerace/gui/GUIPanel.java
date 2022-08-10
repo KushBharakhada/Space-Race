@@ -35,8 +35,6 @@ public class GUIPanel extends JPanel implements KeyListener {
 	
 	private int asteroidSpeed = 1;
 	private int asteroidLaunchRate = 8;
-	private final int PLAYER_SIZE_WIDTH = 400;
-	private final int PLAYER_SIZE_HEIGHT = 500;
 
 	public GUIPanel() {
 		this.setBackground(Color.BLACK);
@@ -82,30 +80,32 @@ public class GUIPanel extends JPanel implements KeyListener {
 	}
 	
 	public void launchGame() {
-		player = new Player(PLAYER_SIZE_WIDTH, PLAYER_SIZE_HEIGHT);
-		setTargetPosition(200, 200);
-		Boolean start = false;
+		player = new Player(GUIFrame.GAME_WIDTH/2, GUIFrame.GAME_HEIGHT-100); //created player at bottom of screen
+        setTargetPosition(200, 200);
+		Boolean start = false; //checks whether an asteroid has been created
 
-		// Infinitely produces asteroids
+		//for the start of the game, need to ensure an asteroid spawns
 		while (true) {
-			if (start) {
+			if (start) { 
+				//once an asteroid has spawned, can start quick generation of asteroids
+				// Infinitely produces asteroids when game is started
 				if (RNG(20) == 0) {
 					launchAsteroid(asteroidSpeed);
 				}
 			}
 			else {
+				//otherwise create one asteroid so the program doesn't break when checking.isAlive and start game
 				launchAsteroid(asteroidSpeed);
 				start = true;
 			}
-		    try {
-		    	
+		    try {	    	
 		    	// How often the asteroids are launched
-				Thread.sleep(asteroidLaunchRate);
+				Thread.sleep(asteroidLaunchRate); //the lower this number, harder the game
+
 		    	player.setXCoord(player.getXCoord() + player.getXSpeed());
 				player.setYCoord(player.getYCoord() + player.getYSpeed());
 				player.checkOutOfBounds();
 				
-
 				// Remove a dead thread from the threads array list
 				// and the corresponding asteroid that has finished its journey
 				if (!threads.get(0).isAlive()) {
