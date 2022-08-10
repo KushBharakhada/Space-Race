@@ -13,8 +13,6 @@ import spacerace.gui.GUIFrame;
  * @author Kush Bharakhada and James March
  */
 
-//TODO make player movement smooth (use timer for KeyPressed and KeyReleased)
-//TODO add diagonal movement (8 directions is all u can get with keyboard)
 //TODO Implement Lives
 //TODO Implement collision detection
 //TODO implement game over when you run out of lives
@@ -24,11 +22,14 @@ public class Player {
 	
 	int x;
 	int y;
+	int xSpeed;
+	int ySpeed;
 	int width = 20;
 	int height = 20;
+	int lives = 1;
 	Color color = Color.red;
 	
-	final int SPEED = 5; //how fast player should move
+	final int SPEED = 2; //how fast player should move
 	
 	//constructor, parameters are coordinates of where to spawn player
 	public Player(int x, int y){
@@ -40,8 +41,24 @@ public class Player {
 		return this.x;
 	}
 	
+	public void setXCoord(int x) {
+		this.x = x;
+	}
+	
 	public int getYCoord() {
 		return this.y;
+	}
+	
+	public void setYCoord(int y) {
+		this.y = y;
+	}
+	
+	public int getXSpeed() {
+		return this.xSpeed;
+	}
+	
+	public int getYSpeed() {
+		return this.ySpeed;
 	}
 	
 	public int getWidth() {
@@ -50,6 +67,10 @@ public class Player {
 	
 	public int getHeight() {
 		return this.height;
+	}
+	
+	public int getLives() {
+		return this.lives;
 	}
 	
 	public Color getColor() {
@@ -66,21 +87,21 @@ public class Player {
 	public void keyPressed(KeyEvent e) {
 		//up
 		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-			this.y = (getYCoord() > 0) ? this.y -= SPEED : this.y;
+			this.ySpeed = (getYCoord() - SPEED > 0) ? -SPEED : 0;
 		}
 		//down
 		if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-			this.y = (getYCoord() < GUIFrame.GAME_HEIGHT - getHeight()*3) 
-					? this.y += SPEED : this.y;
+			this.ySpeed = (getYCoord() + SPEED < GUIFrame.GAME_HEIGHT - getHeight()*3) 
+					? SPEED : 0;
 		}
 		//left
 		if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
-			this.x = (getXCoord() > 0) ? this.x -= SPEED : this.x;
+			this.xSpeed = (getXCoord() - SPEED > 0) ? -SPEED : 0;
 		}
 		//right
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-			this.x = (getXCoord() < GUIFrame.GAME_WIDTH - getWidth()*1.8) 
-				? this.x += SPEED : this.x;
+			this.xSpeed = (getXCoord() + SPEED < GUIFrame.GAME_WIDTH - getWidth()*1.8) 
+				? SPEED : 0;
 		}
 	}
 	
@@ -92,5 +113,39 @@ public class Player {
 	public void draw(Graphics g) {
 		g.setColor(getColor());
 		g.fillRect(getXCoord(), getYCoord(), getWidth(), getHeight());	
+	}
+
+	public void keyReleased(KeyEvent e) {
+		//up and down
+		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W || 
+				e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+			this.ySpeed = 0;
+		}
+		//left and right
+		if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A || 
+				e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+			this.xSpeed = 0;
+		}
+	}
+	
+	//checks if player is about to be out of bounds, if so returns them inbounds
+	public void checkOutOfBounds() {
+		//left border
+		if (getXCoord() - SPEED < 0) {
+			setXCoord(0);
+		}
+		//top border
+		if (getYCoord() - SPEED < 0) {
+			setYCoord(0);
+		}
+		//right border
+		if (getXCoord() + SPEED > GUIFrame.GAME_WIDTH - getWidth()*1.8) {
+			setXCoord((int)(GUIFrame.GAME_WIDTH - getWidth()*1.8));
+		}
+		//down border
+		if (getYCoord() + SPEED > GUIFrame.GAME_HEIGHT - getHeight()*3) {
+			setYCoord(GUIFrame.GAME_HEIGHT - getHeight()*3);
+		}
+		
 	}
 }

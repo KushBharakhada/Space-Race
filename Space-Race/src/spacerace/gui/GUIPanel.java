@@ -85,13 +85,28 @@ public class GUIPanel extends JPanel implements KeyListener {
 	public void launchGame() {
 		createTarget(200, 200);		
 		player = new Player(400, 500);
+		Boolean start = false;
 
 		// Infinitely produces asteroids
 		while (true) {
-		    launchAsteroid(1);
+			if (start) {
+				if (RNG(20) == 0) {
+					launchAsteroid(1);
+				}
+			}
+			else {
+				launchAsteroid(1);
+				start = true;
+			}
 		    try {
+		    	
 		    	// How often the asteroids are launched
-				Thread.sleep(200);
+				Thread.sleep(8);
+		    	player.setXCoord(player.getXCoord() + player.getXSpeed());
+				player.setYCoord(player.getYCoord() + player.getYSpeed());
+				player.checkOutOfBounds();
+				
+
 				// Remove a dead thread from the threads array list
 				// and the corresponding asteroid that has finished its journey
 				if (!threads.get(0).isAlive()) {
@@ -101,6 +116,7 @@ public class GUIPanel extends JPanel implements KeyListener {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+		    
 		}
 	}
 
@@ -116,8 +132,13 @@ public class GUIPanel extends JPanel implements KeyListener {
 	
 	@Override
     public void keyReleased(KeyEvent e) {
-        
+        player.keyReleased(e);
     }
+	
+	//generates a random number between 0 and probability - 1
+	public int RNG(int probability) {
+		return (int)Math.floor(Math.random()*probability);
+	}
 	
 		
 }
