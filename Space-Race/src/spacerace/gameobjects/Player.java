@@ -21,6 +21,7 @@ public class Player {
 	Color color;
 	
 	final double SPEED = 10; //how fast player should move
+	 Object keyPressed;
 	
 	//constructor 
 	public Player(int x, int y, int width, int height, Color color){

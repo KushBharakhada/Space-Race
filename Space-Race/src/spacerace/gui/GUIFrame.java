@@ -4,8 +4,6 @@ import java.awt.event.KeyAdapter;
 
 import javax.swing.*;
 
-import spacerace.gui.GUIPanel.AL;
-
 /**
  * GUIFrame.java
  *
