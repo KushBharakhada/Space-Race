@@ -3,11 +3,9 @@ package spacerace.gui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import javax.swing.JPanel;
 import spacerace.gameobjects.Asteroid;
@@ -34,6 +32,11 @@ public class GUIPanel extends JPanel implements KeyListener {
 	private ArrayList<Thread> threads = new ArrayList<>();
 	private Player player;
 	private Target target;
+	
+	private int asteroidSpeed = 1;
+	private int asteroidLaunchRate = 8;
+	private final int PLAYER_SIZE_WIDTH = 400;
+	private final int PLAYER_SIZE_HEIGHT = 500;
 
 	public GUIPanel() {
 		this.setBackground(Color.BLACK);
@@ -57,11 +60,7 @@ public class GUIPanel extends JPanel implements KeyListener {
 		
 	}
 	
-	public void createPlayer(int x, int y) {
-		player = new Player(400, 525);
-	}
-	
-	public void createTarget(int x, int y) {
+	public void setTargetPosition(int x, int y) {
 		target = new Target(x, y);
 	}
 
@@ -83,25 +82,25 @@ public class GUIPanel extends JPanel implements KeyListener {
 	}
 	
 	public void launchGame() {
-		createTarget(200, 200);		
-		player = new Player(400, 500);
+		player = new Player(PLAYER_SIZE_WIDTH, PLAYER_SIZE_HEIGHT);
+		setTargetPosition(200, 200);
 		Boolean start = false;
 
 		// Infinitely produces asteroids
 		while (true) {
 			if (start) {
 				if (RNG(20) == 0) {
-					launchAsteroid(1);
+					launchAsteroid(asteroidSpeed);
 				}
 			}
 			else {
-				launchAsteroid(1);
+				launchAsteroid(asteroidSpeed);
 				start = true;
 			}
 		    try {
 		    	
 		    	// How often the asteroids are launched
-				Thread.sleep(8);
+				Thread.sleep(asteroidLaunchRate);
 		    	player.setXCoord(player.getXCoord() + player.getXSpeed());
 				player.setYCoord(player.getYCoord() + player.getYSpeed());
 				player.checkOutOfBounds();

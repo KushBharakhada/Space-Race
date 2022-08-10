@@ -17,6 +17,9 @@ public class Target {
 	private int xCoordinate;
 	private int yCoordinate;
 	
+	private final int TARGET_SIZE_WIDTH = 20;
+	private final int TARGET_SIZE_HEIGHT = 20;
+	
 	public Target(int x, int y) {
 		xCoordinate = x;
 		yCoordinate = y;
@@ -24,7 +27,7 @@ public class Target {
 	
 	public Ellipse2D drawTarget() {
 		// Creates a 2D target
-		return new Ellipse2D.Double(xCoordinate, yCoordinate, 15, 15);
+		return new Ellipse2D.Double(xCoordinate, yCoordinate, TARGET_SIZE_WIDTH, TARGET_SIZE_HEIGHT);
 	}
 
 }

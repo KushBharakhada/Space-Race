@@ -17,12 +17,9 @@ public class Asteroid {
 	// Instance variables
 	
 	public static final int ASTEROID_SIZE = 15;
-	// Starting position of asteroids
 	private double xCoordinate;
 	private double yCoordinate;
-	// Increment determines speed of asteroids
 	private int xIncrement;
-	// Whether asteroid spawned on the left or right of screen
 	private double spawnSide;
 	
 	// Constructor
@@ -30,6 +27,7 @@ public class Asteroid {
 		xCoordinate = spawnLeftOrRight();
 		spawnSide = xCoordinate;
 		yCoordinate = randomYCoordinate();
+		// Increment determines speed of asteroids
 		xIncrement = speed;
 	}
 	

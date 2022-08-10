@@ -27,12 +27,12 @@ public class AsteroidRunnable implements Runnable {
 		try {	
 			// Number of frames the asteroid has so asteroid doesn't travel forever
 			int steps = (GUIFrame.GAME_WIDTH / asteroid.getAsteroidSpeed()) + Asteroid.ASTEROID_SIZE;
-			
+			final int FRAME_SPEED = 10;
 			// Movement of the asteroid, horizontally
 			for (int i = 1; i <= steps ; i++) {
 	            asteroid.move();
 	            component.repaint();
-	            Thread.sleep(10);
+	            Thread.sleep(FRAME_SPEED);
 	        }
 			
 		}

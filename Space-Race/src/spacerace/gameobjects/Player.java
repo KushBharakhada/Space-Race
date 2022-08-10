@@ -81,8 +81,6 @@ public class Player {
 		this.color = color;
 	}
 	
-	
-	
 	//borders are a bit weird because the player appears to be drawn at a strange position (not border)
 	public void keyPressed(KeyEvent e) {
 		//up
