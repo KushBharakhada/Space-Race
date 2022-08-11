@@ -1,5 +1,14 @@
 package spacerace;
 
+
+
+
+
+import java.util.Timer;
+import java.util.TimerTask;
+
+
+
 import spacerace.gui.GUIFrame;
 
 /**
@@ -11,9 +20,11 @@ import spacerace.gui.GUIFrame;
  */
 
 public class SpaceRace {
-	
+		
 	public static void main(String[] args) {
+				
 		new GUIFrame();
+		
 	}
 
 }

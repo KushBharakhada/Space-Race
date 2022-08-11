@@ -6,6 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JPanel;
 import spacerace.gameobjects.Asteroid;
@@ -22,6 +24,7 @@ import spacerace.gameobjects.Target;
  */
 
 // TODO Concurrent modification error needs fixing
+// TODO Threads and Arraylists grow to infinate
 
 public class GUIPanel extends JPanel implements KeyListener {
 	
@@ -34,7 +37,8 @@ public class GUIPanel extends JPanel implements KeyListener {
 	private Target target;
 	
 	private int asteroidSpeed = 1;
-	private int asteroidLaunchRate = 8;
+	private long asteroidLaunchRate = 80L;
+	private final long PLAYER_REFRESH_RATE = 8L; 
 
 	public GUIPanel() {
 		this.setBackground(Color.BLACK);
@@ -79,44 +83,49 @@ public class GUIPanel extends JPanel implements KeyListener {
 	    t.start(); 
 	}
 	
+	public void launchAsteroidsWithDelay() {
+		// How often the asteroids are launched
+    	TimerTask task = new TimerTask() {
+			public void run() {
+				launchAsteroid(asteroidSpeed);
+			}
+		};
+		
+		Timer timer = new Timer("Timer");
+		timer.scheduleAtFixedRate(task, 0, asteroidLaunchRate);
+    }
+	
+	public void movePlayer() {
+		// Delay on player, determines player speed
+    	TimerTask task = new TimerTask() {
+			public void run() {
+				player.setXCoord(player.getXCoord() + player.getXSpeed());
+				player.setYCoord(player.getYCoord() + player.getYSpeed());
+				player.checkOutOfBounds();
+			}
+		};
+		
+		Timer timer = new Timer("Timer");
+		timer.scheduleAtFixedRate(task, 0, PLAYER_REFRESH_RATE);
+    }
+	
 	public void launchGame() {
 		player = new Player(GUIFrame.GAME_WIDTH/2, GUIFrame.GAME_HEIGHT-100); //created player at bottom of screen
         setTargetPosition(200, 200);
-		Boolean start = false; //checks whether an asteroid has been created
+        
+        launchAsteroidsWithDelay();
+        movePlayer();
 
-		//for the start of the game, need to ensure an asteroid spawns
-		while (true) {
-			if (start) { 
-				//once an asteroid has spawned, can start quick generation of asteroids
-				// Infinitely produces asteroids when game is started
-				if (RNG(20) == 0) {
-					launchAsteroid(asteroidSpeed);
-				}
-			}
-			else {
-				//otherwise create one asteroid so the program doesn't break when checking.isAlive and start game
-				launchAsteroid(asteroidSpeed);
-				start = true;
-			}
-		    try {	    	
-		    	// How often the asteroids are launched
-				Thread.sleep(asteroidLaunchRate); //the lower this number, harder the game
 
-		    	player.setXCoord(player.getXCoord() + player.getXSpeed());
-				player.setYCoord(player.getYCoord() + player.getYSpeed());
-				player.checkOutOfBounds();
-				
-				// Remove a dead thread from the threads array list
-				// and the corresponding asteroid that has finished its journey
-				if (!threads.get(0).isAlive()) {
-					threads.remove(0);
-					asteroids.remove(0);
-				}
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		    
+		    	
+		/*
+		// Remove a dead thread from the threads array list
+		// and the corresponding asteroid that has finished its journey
+		if (!threads.get(0).isAlive()) {
+			threads.remove(0);
+			asteroids.remove(0);
 		}
+		*/ 
 	}
 
 	@Override
@@ -133,11 +142,5 @@ public class GUIPanel extends JPanel implements KeyListener {
     public void keyReleased(KeyEvent e) {
         player.keyReleased(e);
     }
-	
-	//generates a random number between 0 and probability - 1
-	public int RNG(int probability) {
-		return (int)Math.floor(Math.random()*probability);
-	}
-	
-		
+			
 }
