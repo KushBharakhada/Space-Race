@@ -24,7 +24,6 @@ import spacerace.gameobjects.Target;
  */
 
 // TODO Concurrent modification error needs fixing
-// TODO Threads and Arraylists grow to infinite
 
 public class GUIPanel extends JPanel implements KeyListener {
 	
@@ -90,7 +89,10 @@ public class GUIPanel extends JPanel implements KeyListener {
     	TimerTask task = new TimerTask() {
 			public void run() {
 				launchAsteroid(asteroidSpeed);
-				System.out.println(Thread.activeCount());
+				if (!threads.get(0).isAlive()) {
+					threads.remove(0);
+					asteroids.remove(0);
+				}
 			}
 		};
 		
@@ -120,16 +122,6 @@ public class GUIPanel extends JPanel implements KeyListener {
         launchAsteroidsWithDelay();
         movePlayer();
 
-
-		    	
-		/*
-		// Remove a dead thread from the threads array list
-		// and the corresponding asteroid that has finished its journey
-		if (!threads.get(0).isAlive()) {
-			threads.remove(0);
-			asteroids.remove(0);
-		}
-		*/ 
 	}
 
 	@Override
