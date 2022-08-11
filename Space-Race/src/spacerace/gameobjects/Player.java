@@ -20,14 +20,14 @@ import spacerace.gui.GUIFrame;
 
 public class Player {
 	
-	int x;
-	int y;
-	int xSpeed;
-	int ySpeed;
-	int width = 20;
-	int height = 20;
-	int lives = 1;
-	Color color = Color.red;
+	private int x;
+	private int y;
+	private int xSpeed;
+	private int ySpeed;
+	private int width = 20;
+	private int height = 20;
+	private int lives = 1;
+	private Color color = Color.red;
 	
 	final int SPEED = 2; //how fast player should move
 	
