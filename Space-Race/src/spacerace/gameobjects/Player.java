@@ -28,8 +28,7 @@ public class Player {
 	private int height = 20;
 	private int lives = 1;
 	private Color color = Color.red;
-	
-	final int SPEED = 2; //how fast player should move
+	private final int SPEED = 2; //how fast player should move
 	
 	//constructor, parameters are coordinates of where to spawn player
 	public Player(int x, int y){
