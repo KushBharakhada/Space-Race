@@ -24,7 +24,7 @@ import spacerace.gameobjects.Target;
  */
 
 // TODO Concurrent modification error needs fixing
-// TODO Threads and Arraylists grow to infinate
+// TODO Threads and Arraylists grow to infinite
 
 public class GUIPanel extends JPanel implements KeyListener {
 	
@@ -79,6 +79,8 @@ public class GUIPanel extends JPanel implements KeyListener {
 		// Starts a new thread for each new asteroid
 	    Runnable r = new AsteroidRunnable(a, this);
 	    Thread t = new Thread(r);
+	    // Add the thread to a list so corresponding asteroid can be
+	    // removed from asteroids list when its thread is dead
 	    threads.add(t);
 	    t.start(); 
 	}
@@ -88,10 +90,11 @@ public class GUIPanel extends JPanel implements KeyListener {
     	TimerTask task = new TimerTask() {
 			public void run() {
 				launchAsteroid(asteroidSpeed);
+				System.out.println(Thread.activeCount());
 			}
 		};
 		
-		Timer timer = new Timer("Timer");
+		Timer timer = new Timer();
 		timer.scheduleAtFixedRate(task, 0, asteroidLaunchRate);
     }
 	
@@ -105,14 +108,15 @@ public class GUIPanel extends JPanel implements KeyListener {
 			}
 		};
 		
-		Timer timer = new Timer("Timer");
+		Timer timer = new Timer();
 		timer.scheduleAtFixedRate(task, 0, PLAYER_REFRESH_RATE);
     }
 	
 	public void launchGame() {
-		player = new Player(GUIFrame.GAME_WIDTH/2, GUIFrame.GAME_HEIGHT-100); //created player at bottom of screen
+		 // Created player at bottom of screen
+		player = new Player(GUIFrame.GAME_WIDTH/2, GUIFrame.GAME_HEIGHT-100);
+		
         setTargetPosition(200, 200);
-        
         launchAsteroidsWithDelay();
         movePlayer();
 
