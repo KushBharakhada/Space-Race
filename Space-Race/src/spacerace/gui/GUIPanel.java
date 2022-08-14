@@ -6,6 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -30,14 +32,15 @@ public class GUIPanel extends JPanel implements KeyListener {
 	private static final long serialVersionUID = 1L;
 	
 	// Instance Variables
-	private ArrayList<Asteroid> asteroids = new ArrayList<>();
+	private List<Asteroid> asteroids = Collections.synchronizedList(new ArrayList<>());
 	private ArrayList<Thread> threads = new ArrayList<>();
 	private Player player;
 	private Target target;
 	
 	private int asteroidSpeed = 1;
-	private long asteroidLaunchRate = 80L;
-	private final long PLAYER_REFRESH_RATE = 8L; 
+	private long asteroidLaunchRate = 400L;
+	private final long PLAYER_REFRESH_RATE = 8L;
+	private boolean isGameRunning = true;
 
 	public GUIPanel() {
 		this.setBackground(Color.BLACK);
@@ -61,10 +64,6 @@ public class GUIPanel extends JPanel implements KeyListener {
 		
 	}
 	
-	public void setTargetPosition(int x, int y) {
-		target = new Target(x, y);
-	}
-
 	public void launchAsteroid(int speed) {
 		// Creating an asteroid object
 		Asteroid a = new Asteroid(speed);
@@ -85,43 +84,44 @@ public class GUIPanel extends JPanel implements KeyListener {
 	}
 	
 	public void launchAsteroidsWithDelay() {
-		// How often the asteroids are launched
-    	TimerTask task = new TimerTask() {
-			public void run() {
-				launchAsteroid(asteroidSpeed);
-				if (!threads.get(0).isAlive()) {
-					threads.remove(0);
-					asteroids.remove(0);
+		if (isGameRunning) {
+			// How often the asteroids are launched
+	    	TimerTask task = new TimerTask() {
+				public void run() {
+					launchAsteroid(asteroidSpeed);
+					if (!threads.get(0).isAlive()) {
+						threads.remove(0);
+						asteroids.remove(0);
+					}
 				}
-			}
-		};
-		
-		Timer timer = new Timer();
-		timer.scheduleAtFixedRate(task, 0, asteroidLaunchRate);
+			};
+			Timer timer = new Timer();
+			timer.scheduleAtFixedRate(task, 0, asteroidLaunchRate);
+		}
     }
 	
 	public void movePlayer() {
-		// Delay on player, determines player speed
-    	TimerTask task = new TimerTask() {
-			public void run() {
-				player.setXCoord(player.getXCoord() + player.getXSpeed());
-				player.setYCoord(player.getYCoord() + player.getYSpeed());
-				player.checkOutOfBounds();
-			}
-		};
-		
-		Timer timer = new Timer();
-		timer.scheduleAtFixedRate(task, 0, PLAYER_REFRESH_RATE);
+		if (isGameRunning) {
+			// Delay on player, determines player speed
+	    	TimerTask task = new TimerTask() {
+				public void run() {
+					player.setXCoord(player.getXCoord() + player.getXSpeed());
+					player.setYCoord(player.getYCoord() + player.getYSpeed());
+					player.checkOutOfBounds();
+				}
+			};
+			Timer timer = new Timer();
+			timer.scheduleAtFixedRate(task, 0, PLAYER_REFRESH_RATE);
+		}
     }
-	
+		
 	public void launchGame() {
 		 // Created player at bottom of screen
 		player = new Player(GUIFrame.GAME_WIDTH/2, GUIFrame.GAME_HEIGHT-100);
-		
-        setTargetPosition(200, 200);
+		target = new Target(200, 200);
+
         launchAsteroidsWithDelay();
         movePlayer();
-
 	}
 
 	@Override

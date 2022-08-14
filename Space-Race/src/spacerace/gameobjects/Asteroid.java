@@ -1,5 +1,6 @@
 package spacerace.gameobjects;
 
+import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
 import java.util.Random;
 import spacerace.gui.GUIFrame;
@@ -53,9 +54,10 @@ public class Asteroid {
 		return 0;
 	}
 	
-	public Ellipse2D drawAsteroid() {
+	public Ellipse2D drawAsteroid() {		
 		// Creates a 2D asteroid
 		return new Ellipse2D.Double(xCoordinate, yCoordinate, ASTEROID_SIZE, ASTEROID_SIZE);
+		
 	}
 	
 	public void move() {
