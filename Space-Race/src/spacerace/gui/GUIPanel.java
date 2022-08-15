@@ -27,8 +27,6 @@ import spacerace.gameobjects.Target;
  * @author Kush Bharakhada and James March
  */
 
-// TODO Concurrent modification error needs fixing
-
 public class GUIPanel extends JPanel implements KeyListener {
 	
 	private static final long serialVersionUID = 1L;
@@ -48,7 +46,9 @@ public class GUIPanel extends JPanel implements KeyListener {
 
 	public GUIPanel() {
 		this.setBackground(Color.BLACK);
-        setLayout(null);
+		// Created player at bottom of screen
+	    player = new Player(GUIFrame.GAME_WIDTH/2, GUIFrame.GAME_HEIGHT-100);
+		target = new Target(200, 200);
     }
 	
 	public void paintComponent(Graphics g) {
@@ -126,25 +126,26 @@ public class GUIPanel extends JPanel implements KeyListener {
 	public void checkCollision() {
 		Rectangle playerHurtBox = player.drawPlayer();
 		
-		//check collision with asteroids
-		for (Asteroid asteroid : asteroids) {
-			Ellipse2D asteroidHitBox = asteroid.drawAsteroid();
-			if (asteroidHitBox.intersects(playerHurtBox) && !player.getInvincible()) {
-				System.out.println("Life lost");
-				player.setLives(player.getLives() - 1);
-				if (player.getLives() == 0) {
-					stopTimers();
-				}
-				else {
-					System.out.println("remaining lives: " + player.getLives());
-					playerInvincibility();
+		//check collision with asteroids	
+		synchronized(asteroids) {
+			for (Asteroid asteroid : asteroids) {
+				Ellipse2D asteroidHitBox = asteroid.drawAsteroid();
+				if (asteroidHitBox.intersects(playerHurtBox) && !player.getInvincible()) {
+					System.out.println("Life lost");
+					player.setLives(player.getLives() - 1);
+					if (player.getLives() == 0) {
+						stopTimers();
+					}
+					else {
+						System.out.println("remaining lives: " + player.getLives());
+						playerInvincibility();
+					}
 				}
 			}
 		}
 		
 		//check collision with target
-		Ellipse2D goalHitBox = target.drawTarget();
-		if (goalHitBox.intersects(playerHurtBox)) {
+		if (target.drawTarget().intersects(playerHurtBox)) {
 			System.out.println("target hit");
 		}
 	}
@@ -168,15 +169,10 @@ public class GUIPanel extends JPanel implements KeyListener {
 	}
 		
 	public void launchGame() {
-		 // Created player at bottom of screen
-		player = new Player(GUIFrame.GAME_WIDTH/2, GUIFrame.GAME_HEIGHT-100);
-		target = new Target(200, 200);
-
 		// Launches asteroids at a constant rate
         launchAsteroidsWithDelay();
         // Allows the player to move
         movePlayer();
-        
 	}
 
 	@Override
