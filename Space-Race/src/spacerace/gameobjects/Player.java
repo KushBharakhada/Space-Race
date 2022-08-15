@@ -24,8 +24,8 @@ public class Player {
 	private int y;
 	private int xSpeed;
 	private int ySpeed;
-	private int width = 20;
-	private int height = 20;
+	private final int width = 20;
+	private final int height = 20;
 	private int lives = 1;
 	private Color color = Color.red;
 	
@@ -150,4 +150,9 @@ public class Player {
 		}
 		
 	}
+	
+	public Rectangle getRectangle() {
+		return new Rectangle(getXCoord(), getYCoord(), getWidth(), getHeight());
+	}
+	
 }
