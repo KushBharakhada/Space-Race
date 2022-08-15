@@ -28,6 +28,11 @@ public class Player {
 	private int height = 20;
 	private int lives = 1;
 	private Color color = Color.red;
+	
+	//JFrame coordinates are weird, the correction ensures that the player never goes out of bounds
+	private final double WIDTH_CORRECTION = 1.8;
+	private final double HEIGHT_CORRECTION = 3;
+	
 	private final int SPEED = 2; //how fast player should move
 	
 	//constructor, parameters are coordinates of where to spawn player
@@ -88,7 +93,7 @@ public class Player {
 		}
 		//down
 		if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-			this.ySpeed = (getYCoord() + SPEED < GUIFrame.GAME_HEIGHT - getHeight()*3) 
+			this.ySpeed = (getYCoord() + SPEED < GUIFrame.GAME_HEIGHT - getHeight()*HEIGHT_CORRECTION) 
 					? SPEED : 0;
 		}
 		//left
@@ -97,7 +102,7 @@ public class Player {
 		}
 		//right
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-			this.xSpeed = (getXCoord() + SPEED < GUIFrame.GAME_WIDTH - getWidth()*1.8) 
+			this.xSpeed = (getXCoord() + SPEED < GUIFrame.GAME_WIDTH - getWidth()*WIDTH_CORRECTION) 
 				? SPEED : 0;
 		}
 	}
@@ -136,12 +141,12 @@ public class Player {
 			setYCoord(0);
 		}
 		//right border
-		if (getXCoord() + SPEED > GUIFrame.GAME_WIDTH - getWidth()*1.8) {
-			setXCoord((int)(GUIFrame.GAME_WIDTH - getWidth()*1.8));
+		if (getXCoord() + SPEED > GUIFrame.GAME_WIDTH - getWidth() * WIDTH_CORRECTION) {
+			setXCoord((int)(GUIFrame.GAME_WIDTH - getWidth() * WIDTH_CORRECTION));
 		}
 		//down border
-		if (getYCoord() + SPEED > GUIFrame.GAME_HEIGHT - getHeight()*3) {
-			setYCoord(GUIFrame.GAME_HEIGHT - getHeight()*3);
+		if (getYCoord() + SPEED > GUIFrame.GAME_HEIGHT - getHeight() * HEIGHT_CORRECTION) {
+			setYCoord((int)(GUIFrame.GAME_HEIGHT - getHeight() * HEIGHT_CORRECTION));
 		}
 		
 	}
