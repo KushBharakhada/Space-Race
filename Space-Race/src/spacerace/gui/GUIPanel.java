@@ -263,12 +263,8 @@ public class GUIPanel extends JPanel implements KeyListener {
 	    return coords;
 	}
 	
+	//used to check the direction being travelled and adjust image accordingly
 	public void checkPlayerGraphic() {
-		
-		final int HEIGHT_ROTATION = player.getHeight() / 2;
-		final int WIDTH_ROTATION = player.getWidth() / 2;
-		
-		
 		//creates a clone of the original image
 		BufferedImage source = null;
 		try {
