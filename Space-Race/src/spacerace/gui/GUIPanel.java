@@ -3,8 +3,10 @@ package spacerace.gui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -111,11 +113,38 @@ public class GUIPanel extends JPanel implements KeyListener {
 				player.setXCoord(player.getXCoord() + player.getXSpeed());
 				player.setYCoord(player.getYCoord() + player.getYSpeed());
 				player.checkOutOfBounds();
+				checkCollision();
 			}
 		};
 		playerTimer = new Timer();
 		playerTimer.scheduleAtFixedRate(task, 0, PLAYER_REFRESH_RATE);	
     }
+	
+	//used to check collision between player and all asteroids
+	public void checkCollision() {
+		Rectangle playerHurtBox = player.drawPlayer();
+		
+		//check collision with asteroids
+		for (Asteroid asteroid : asteroids) {
+			Ellipse2D asteroidHitBox = asteroid.drawAsteroid();
+			if (asteroidHitBox.intersects(playerHurtBox)) {
+				System.out.println("GAME OVER");
+				stopTimers();
+			}
+		}
+		
+		//check collision with target
+		Ellipse2D goalHitBox = target.drawTarget();
+		if (goalHitBox.intersects(playerHurtBox)) {
+			System.out.println("target hit");
+		}
+	}
+	
+	//used to stop player and generation of new asteroids during a game over+
+	public void stopTimers() {
+		asteroidTimer.cancel();
+		playerTimer.cancel();
+	}
 		
 	public void launchGame() {
 		 // Created player at bottom of screen
