@@ -77,6 +77,10 @@ public class GUIPanel extends JPanel implements KeyListener {
 			}
 		}
 		
+		// Level and lives display
+		g2d.setColor(Color.WHITE);
+		g2d.drawString(("Lives: " + player.getLives()), 10, 20);
+		g2d.drawString(("Level: " + level), 10, 40);
 	}
 	
 	public void launchAsteroid(int speed) {
@@ -128,13 +132,23 @@ public class GUIPanel extends JPanel implements KeyListener {
     }
 	
 	//used to check collision between player and all asteroids
-	public void checkCollision() {		
-		//check collision with asteroids
+	public void checkCollision() {
+		Rectangle playerHurtBox = player.drawPlayer();
+		
+		//check collision with asteroids	
 		synchronized(asteroids) {
 			for (Asteroid asteroid : asteroids) {
-				if (asteroid.drawAsteroid().intersects(player.drawPlayer())) {
-					System.out.println("GAME OVER");
-					endGame();
+				Ellipse2D asteroidHitBox = asteroid.drawAsteroid();
+				if (asteroidHitBox.intersects(playerHurtBox) && !player.getInvincible()) {
+					System.out.println("Life lost");
+					player.setLives(player.getLives() - 1);
+					if (player.getLives() == 0) {
+						endGame();
+					}
+					else {
+						System.out.println("remaining lives: " + player.getLives());
+						playerInvincibility();
+					}
 				}
 			}
 		}
@@ -155,9 +169,21 @@ public class GUIPanel extends JPanel implements KeyListener {
 		target = new Target(coords[0], coords[1]);
 	}
 	
+	public void playerInvincibility() {
+		TimerTask setInvincibility = new TimerTask() {
+			public void run() {
+				player.setInvinclible(false);
+			}
+		};
+		player.setInvinclible(true);
+		Timer invincibleTimer = new Timer();
+		invincibleTimer.schedule(setInvincibility, 1000);
+	}
+	
 	//used to stop player and generation of new asteroids during a game over+
-	public void endGame() {
-		// Time stops the asteroids and player movement
+    public void endGame() {
+    	// Time stops the asteroids and player movement
+		System.out.println("Game Over");
 		asteroidTimer.cancel();
 		playerTimer.cancel();
 		isGameRunning = false;
