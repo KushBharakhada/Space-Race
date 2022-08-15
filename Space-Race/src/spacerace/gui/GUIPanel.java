@@ -123,12 +123,20 @@ public class GUIPanel extends JPanel implements KeyListener {
 	//used to check collision between player and all asteroids
 	public void checkCollision() {
 		Rectangle playerHurtBox = player.drawPlayer();
+		
+		//check collision with asteroids
 		for (Asteroid asteroid : asteroids) {
 			Ellipse2D asteroidHitBox = asteroid.drawAsteroid();
 			if (asteroidHitBox.intersects(playerHurtBox)) {
 				System.out.println("GAME OVER");
 				stopTimers();
 			}
+		}
+		
+		//check collision with target
+		Ellipse2D goalHitBox = target.drawTarget();
+		if (goalHitBox.intersects(playerHurtBox)) {
+			System.out.println("target hit");
 		}
 	}
 	
