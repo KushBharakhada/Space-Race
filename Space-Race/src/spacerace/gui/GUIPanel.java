@@ -2,23 +2,25 @@ package spacerace.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-import spacerace.gameobjects.Asteroid;
-import spacerace.gameobjects.AsteroidRunnable;
-import spacerace.gameobjects.Player;
-import spacerace.gameobjects.Target;
+import spacerace.gameobjects.*;
 
 /**
  * GUIPanel.java
@@ -42,42 +44,44 @@ public class GUIPanel extends JPanel implements KeyListener {
 	private Target target;
 	private Timer asteroidTimer;
 	private Timer playerTimer;
+	private BufferedImage background;
 	
-	private int asteroidSpeed;
-	private long asteroidLaunchRate;
-	private final long PLAYER_REFRESH_RATE;
-	private boolean isGameRunning;
-	private int level;
+	private int asteroidSpeed = 1;
+	private long asteroidLaunchRate = 200L;
+	private final long PLAYER_REFRESH_RATE = 8L;
+	private boolean isGameRunning = true;
+	private int level = 1;
 
 	public GUIPanel() {
-		this.setBackground(Color.BLACK);
+		this.addKeyListener(this);
+        this.setFocusable(true);
 		this.setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
 		
 		// Initial position of player and target
 	    player = new Player(GAME_WIDTH / 2, GAME_HEIGHT - 100);
 		target = new Target(GAME_WIDTH / 2, GAME_HEIGHT / 2);
 		
-		asteroidSpeed = 1;
-		asteroidLaunchRate = 200L;
-		PLAYER_REFRESH_RATE = 8L;
-		isGameRunning = true;
-		level = 1;
+		// Background image
+		try {
+			background = ImageIO.read(new File("./src/images/background.jpg"));
+		} catch (IOException e) {
+			this.setBackground(Color.BLACK);
+			e.printStackTrace();
+		}
+		
+		launchGame();
     }
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
 		
-		// Target
-		g2d.setColor(Color.YELLOW);
-		g2d.fill(target.drawTarget());
-		
-		// Player
-		g2d.setColor(Color.RED);
-		g2d.fill(player.drawPlayer());
-		
+		// Check background image exists (black background otherwise)
+		if (background != null) {
+			g2d.drawImage(background, 0, 0, GAME_WIDTH, GAME_HEIGHT, this);
+		}
+				
 		// Asteroids
-		// Control access drawPlayer multiple threads to the array list
 		synchronized(asteroids) {
 			// Goes through all the asteroids that have been added
 			for (Asteroid a : asteroids) {
@@ -86,10 +90,36 @@ public class GUIPanel extends JPanel implements KeyListener {
 			}
 		}
 		
-		// Level and lives display
-		g2d.setColor(Color.WHITE);
-		g2d.drawString(("Lives: " + player.getLives()), 10, 20);
-		g2d.drawString(("Level: " + level), 10, 40);
+		if (isGameRunning) {
+			final int LEVEL_LIVES_POS_X = 10;
+			final int LEVEL_LIVES_POS_Y = 20;
+			
+			// Target
+			g2d.setColor(Color.YELLOW);
+			g2d.fill(target.drawTarget());
+			
+			// Player
+			g2d.setColor(Color.RED);
+			g2d.fill(player.drawPlayer());
+			
+			// Level and lives display
+			g2d.setColor(Color.WHITE);
+			g2d.drawString(("Lives: " + player.getLives()), LEVEL_LIVES_POS_X, LEVEL_LIVES_POS_Y);
+			g2d.drawString(("Level: " + level), LEVEL_LIVES_POS_X, LEVEL_LIVES_POS_Y + 20);
+		}
+		
+		// End game display
+		if (!isGameRunning) {
+			final int END_GAME_TITLE_POS_X = 75;
+			final int END_GAME_TITLE_POS_Y = GAME_HEIGHT / 2;
+			g2d.setColor(Color.WHITE);
+			g2d.setFont(new Font("TimesRoman", Font.BOLD, 100));
+			g2d.drawString("GAME OVER", END_GAME_TITLE_POS_X, END_GAME_TITLE_POS_Y);
+			g2d.setFont(new Font("TimesRoman", Font.BOLD, 50));
+			g2d.setColor(Color.YELLOW);
+			g2d.drawString("LEVEL " + (level-1), END_GAME_TITLE_POS_X + 220, END_GAME_TITLE_POS_Y + 100);
+			
+		}
 	}
 	
 	public void launchAsteroid(int speed) {
@@ -185,9 +215,6 @@ public class GUIPanel extends JPanel implements KeyListener {
 				player.setInvinclible(false);
 			}
 		};
-		// Reset player position? ************
-		//player.setXCoord(GAME_WIDTH / 2);
-		//player.setYCoord(GAME_HEIGHT - 100);
 		player.setInvinclible(true);
 		Timer invincibleTimer = new Timer();
 		invincibleTimer.schedule(setInvincibility, 1000);
@@ -230,9 +257,7 @@ public class GUIPanel extends JPanel implements KeyListener {
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-        
-    }
+	public void keyTyped(KeyEvent e) {}
 	
 	@Override
     public void keyPressed(KeyEvent e) {
