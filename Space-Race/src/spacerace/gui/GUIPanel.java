@@ -1,6 +1,7 @@
 package spacerace.gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -32,6 +33,9 @@ public class GUIPanel extends JPanel implements KeyListener {
 	private static final long serialVersionUID = 1L;
 	
 	// Instance Variables
+	public static final int GAME_WIDTH = 800;
+	public static final int GAME_HEIGHT = 600;	
+	
 	private List<Asteroid> asteroids = Collections.synchronizedList(new ArrayList<>());
 	private ArrayList<Thread> threads = new ArrayList<>();
 	private Player player;
@@ -47,9 +51,11 @@ public class GUIPanel extends JPanel implements KeyListener {
 
 	public GUIPanel() {
 		this.setBackground(Color.BLACK);
-		// Created player at bottom of screen
-	    player = new Player(GUIFrame.GAME_WIDTH/2, GUIFrame.GAME_HEIGHT-100);
-		target = new Target(200, 200);
+		this.setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
+		
+		// Initial position of player and target
+	    player = new Player(GAME_WIDTH / 2, GAME_HEIGHT - 100);
+		target = new Target(GAME_WIDTH / 2, GAME_HEIGHT / 2);
 		
 		asteroidSpeed = 1;
 		asteroidLaunchRate = 200L;
@@ -62,12 +68,15 @@ public class GUIPanel extends JPanel implements KeyListener {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
 		
+		// Target
 		g2d.setColor(Color.YELLOW);
 		g2d.fill(target.drawTarget());
 		
+		// Player
 		g2d.setColor(Color.RED);
 		g2d.fill(player.drawPlayer());
 		
+		// Asteroids
 		// Control access drawPlayer multiple threads to the array list
 		synchronized(asteroids) {
 			// Goes through all the asteroids that have been added
@@ -107,6 +116,7 @@ public class GUIPanel extends JPanel implements KeyListener {
     	TimerTask task = new TimerTask() {
 			public void run() {
 				launchAsteroid(asteroidSpeed);
+				// Remove dead threads and its corresponding asteroid
 				if (!threads.get(0).isAlive()) {
 					threads.remove(0);
 					asteroids.remove(0);
@@ -131,7 +141,7 @@ public class GUIPanel extends JPanel implements KeyListener {
 		playerTimer.scheduleAtFixedRate(task, 0, PLAYER_REFRESH_RATE);	
     }
 	
-	//used to check collision between player and all asteroids
+	// Used to check collision between player and all asteroids
 	public void checkCollision() {
 		Rectangle playerHurtBox = player.drawPlayer();
 		
@@ -140,13 +150,13 @@ public class GUIPanel extends JPanel implements KeyListener {
 			for (Asteroid asteroid : asteroids) {
 				Ellipse2D asteroidHitBox = asteroid.drawAsteroid();
 				if (asteroidHitBox.intersects(playerHurtBox) && !player.getInvincible()) {
-					System.out.println("Life lost");
+					// Decrease player life and end game if 0 lives
 					player.setLives(player.getLives() - 1);
 					if (player.getLives() == 0) {
 						endGame();
 					}
 					else {
-						System.out.println("remaining lives: " + player.getLives());
+						// Temporary player timeout
 						playerInvincibility();
 					}
 				}
@@ -156,11 +166,11 @@ public class GUIPanel extends JPanel implements KeyListener {
 		//check collision with target
 		if (target.drawTarget().intersects(player.drawPlayer())) {
 		    increaseLevelAndDifficulty();
-			System.out.println("target hit");
 		}
 	}
 	
 	public void increaseLevelAndDifficulty() {
+		// Increase level and speed of asteroids
 		level++;
 		asteroidSpeed++;
 		
@@ -175,6 +185,9 @@ public class GUIPanel extends JPanel implements KeyListener {
 				player.setInvinclible(false);
 			}
 		};
+		// Reset player position? ************
+		//player.setXCoord(GAME_WIDTH / 2);
+		//player.setYCoord(GAME_HEIGHT - 100);
 		player.setInvinclible(true);
 		Timer invincibleTimer = new Timer();
 		invincibleTimer.schedule(setInvincibility, 1000);
@@ -182,8 +195,7 @@ public class GUIPanel extends JPanel implements KeyListener {
 	
 	//used to stop player and generation of new asteroids during a game over+
     public void endGame() {
-    	// Time stops the asteroids and player movement
-		System.out.println("Game Over");
+    	// Stop the asteroids and player movement
 		asteroidTimer.cancel();
 		playerTimer.cancel();
 		isGameRunning = false;
@@ -192,9 +204,21 @@ public class GUIPanel extends JPanel implements KeyListener {
 	public int[] randomCoords() {
 		int[] coords = new int[2];
 		// Random x coordinate
-	    coords[0] = (int)(Math.random() * GUIFrame.GAME_HEIGHT);	
+	    int xCoord = (int)(Math.random() * GAME_WIDTH);	
 	    // Random y coordinate
-	    coords[1] = (int)(Math.random() * GUIFrame.GAME_WIDTH);
+	    int yCoord = (int)(Math.random() * GAME_HEIGHT);
+	    
+	    // Adjust x and y coordinate to ensure full target is seen on panel
+	    if (xCoord >= GAME_WIDTH - Target.TARGET_SIZE_WIDTH)
+	    	coords[0] = GAME_WIDTH - Target.TARGET_SIZE_WIDTH;
+	    else
+	    	coords[0] = xCoord;
+	    
+	    if (yCoord >= GAME_HEIGHT - Target.TARGET_SIZE_HEIGHT)
+	    	coords[1] = GAME_HEIGHT - Target.TARGET_SIZE_HEIGHT;
+	    else
+	    	coords[1] = yCoord;
+	    	
 	    return coords;
 	}
 		

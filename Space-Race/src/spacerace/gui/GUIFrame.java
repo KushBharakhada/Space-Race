@@ -12,11 +12,7 @@ import javax.swing.*;
 
 public class GUIFrame extends JFrame {
 	
-	private static final long serialVersionUID = 1L;
-	
-	// Instance Variables
-	public static final int GAME_WIDTH = 800;
-	public static final int GAME_HEIGHT = 600;	
+	private static final long serialVersionUID = 1L;	
 
 	public GUIFrame() {
         // Setting up the frame
@@ -26,7 +22,7 @@ public class GUIFrame extends JFrame {
         panel.addKeyListener(panel);
         panel.setFocusable(true);
         this.add(panel);  
-        this.setSize(GAME_WIDTH, GAME_HEIGHT);
+        this.pack();
         this.setVisible(true);
         panel.launchGame();
     }

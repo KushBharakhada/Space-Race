@@ -17,8 +17,8 @@ public class Target {
 	private int xCoordinate;
 	private int yCoordinate;
 	
-	private final int TARGET_SIZE_WIDTH = 20;
-	private final int TARGET_SIZE_HEIGHT = 20;
+	public static final int TARGET_SIZE_WIDTH = 20;
+	public static final int TARGET_SIZE_HEIGHT = 20;
 	
 	public Target(int x, int y) {
 		xCoordinate = x;

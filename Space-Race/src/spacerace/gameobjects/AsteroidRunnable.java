@@ -1,6 +1,7 @@
 package spacerace.gameobjects;
 
 import java.awt.Component;
+import spacerace.gui.GUIPanel;
 
 /**
  * AsteroidRunnable.java
@@ -9,8 +10,6 @@ import java.awt.Component;
  *
  * @author Kush Bharakhada and James March
  */
-
-import spacerace.gui.GUIFrame;
 
 public class AsteroidRunnable implements Runnable {
 	
@@ -26,7 +25,7 @@ public class AsteroidRunnable implements Runnable {
 			
 		try {	
 			// Number of frames the asteroid has so asteroid doesn't travel forever
-			int steps = (GUIFrame.GAME_WIDTH / asteroid.getAsteroidSpeed()) + Asteroid.ASTEROID_SIZE;
+			int steps = (GUIPanel.GAME_WIDTH / asteroid.getAsteroidSpeed()) + Asteroid.ASTEROID_SIZE;
 			final int FRAME_SPEED = 10;
 			// Movement of the asteroid, horizontally
 			for (int i = 1; i <= steps ; i++) {

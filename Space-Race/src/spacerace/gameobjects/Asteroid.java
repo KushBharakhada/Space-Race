@@ -1,9 +1,8 @@
 package spacerace.gameobjects;
 
-import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
 import java.util.Random;
-import spacerace.gui.GUIFrame;
+import spacerace.gui.GUIPanel;
 
 /**
  * Asteroid.java
@@ -40,7 +39,7 @@ public class Asteroid {
 	public double randomYCoordinate() {
 		// Spawn asteroid randomly on y axis
 		double random = Math.random();
-		return random * GUIFrame.GAME_HEIGHT;		
+		return random * GUIPanel.GAME_HEIGHT;		
 	}
 	
 	public double spawnLeftOrRight() {
@@ -49,7 +48,7 @@ public class Asteroid {
 		// starts on left or right of screen
 		boolean randomBool = random.nextBoolean();
 		if (randomBool) {
-			return GUIFrame.GAME_WIDTH;
+			return GUIPanel.GAME_WIDTH;
 		}
 		return 0;
 	}

@@ -2,8 +2,7 @@ package spacerace.gameobjects;
 
 import java.awt.*;
 import java.awt.event.*;
-import spacerace.gui.GUIFrame;
-
+import spacerace.gui.GUIPanel;
 
 /**
  * Player.java
@@ -24,14 +23,10 @@ public class Player {
 	private int y;
 	private int xSpeed;
 	private int ySpeed;
-	private final int width = 20;
-	private final int height = 20;
+	private final int WIDTH = 20;
+	private final int HEIGHT = 20;
 	private int lives = 3; //use this to set how many lives player has at start of game
 	private Boolean invincible = false;
-	
-	//JFrame coordinates are weird, the correction ensures that the player never goes out of bounds
-	private final double WIDTH_CORRECTION = 1.8;
-	private final double HEIGHT_CORRECTION = 3;
 	
 	private final int SPEED = 2; //how fast player should move
 	
@@ -66,11 +61,11 @@ public class Player {
 	}
 	
 	public int getWidth() {
-		return this.width;
+		return this.WIDTH;
 	}
 	
 	public int getHeight() {
-		return this.height;
+		return this.HEIGHT;
 	}
 	
 	public int getLives() {
@@ -89,7 +84,6 @@ public class Player {
 		this.invincible = invincible;
 	}
 	
-	//borders are a bit weird because the player appears to be drawn at a strange position (not border)
 	public void keyPressed(KeyEvent e) {
 		//up
 		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
@@ -97,7 +91,7 @@ public class Player {
 		}
 		//down
 		if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-			this.ySpeed = (getYCoord() + SPEED < GUIFrame.GAME_HEIGHT - getHeight()*HEIGHT_CORRECTION) 
+			this.ySpeed = (getYCoord() + SPEED < GUIPanel.GAME_HEIGHT - getHeight()) 
 					? SPEED : 0;
 		}
 		//left
@@ -106,7 +100,7 @@ public class Player {
 		}
 		//right
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-			this.xSpeed = (getXCoord() + SPEED < GUIFrame.GAME_WIDTH - getWidth()*WIDTH_CORRECTION) 
+			this.xSpeed = (getXCoord() + SPEED < GUIPanel.GAME_WIDTH - getWidth()) 
 				? SPEED : 0;
 		}
 	}
@@ -140,13 +134,14 @@ public class Player {
 			setYCoord(0);
 		}
 		//right border
-		if (getXCoord() + SPEED > GUIFrame.GAME_WIDTH - getWidth() * WIDTH_CORRECTION) {
-			setXCoord((int)(GUIFrame.GAME_WIDTH - getWidth() * WIDTH_CORRECTION));
+		if (getXCoord() + SPEED > GUIPanel.GAME_WIDTH - getWidth()) {
+			setXCoord((int)(GUIPanel.GAME_WIDTH - getWidth()));
 		}
 		//down border
-		if (getYCoord() + SPEED > GUIFrame.GAME_HEIGHT - getHeight() * HEIGHT_CORRECTION) {
-			setYCoord((int)(GUIFrame.GAME_HEIGHT - getHeight() * HEIGHT_CORRECTION));
+		if (getYCoord() + SPEED > GUIPanel.GAME_HEIGHT - getHeight()) {
+			setYCoord((int)(GUIPanel.GAME_HEIGHT - getHeight()));
 		}
+		//System.out.println(getXCoord() + "," + getYCoord());
 		
 	}
 	
