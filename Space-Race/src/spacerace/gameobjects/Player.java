@@ -2,12 +2,6 @@ package spacerace.gameobjects;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import spacerace.gui.GUIPanel;
 
 /**
@@ -17,11 +11,6 @@ import spacerace.gui.GUIPanel;
  *
  * @author Kush Bharakhada and James March
  */
-
-//TODO Implement Lives
-//TODO Implement collision detection
-//TODO implement game over when you run out of lives
-//TODO Define colour in paintComponent
 
 public class Player {
 	
@@ -33,7 +22,6 @@ public class Player {
 	private final int HEIGHT = 20;
 	private int lives = 3; //use this to set how many lives player has at start of game
 	private Boolean invincible = false;
-	private BufferedImage spaceshipImg;
 	
 	
 	private final int SPEED = 1; //how fast player should move
