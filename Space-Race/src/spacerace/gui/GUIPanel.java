@@ -44,7 +44,11 @@ public class GUIPanel extends JPanel implements KeyListener {
 	private Target target;
 	private Timer asteroidTimer;
 	private Timer playerTimer;
-	private BufferedImage background;
+	
+	private BufferedImage asteroidImg;
+	private BufferedImage targetImg;
+	private BufferedImage spaceshipImg;
+	private BufferedImage backgroundImg;
 	
 	private int asteroidSpeed = 1;
 	private long asteroidLaunchRate = 200L;
@@ -61,14 +65,7 @@ public class GUIPanel extends JPanel implements KeyListener {
 	    player = new Player(GAME_WIDTH / 2, GAME_HEIGHT - 100);
 		target = new Target(GAME_WIDTH / 2, GAME_HEIGHT / 2);
 		
-		// Background image
-		try {
-			background = ImageIO.read(new File("./src/images/background.jpg"));
-		} catch (IOException e) {
-			this.setBackground(Color.BLACK);
-			e.printStackTrace();
-		}
-		
+		loadImages();
 		launchGame();
     }
 	
@@ -77,17 +74,19 @@ public class GUIPanel extends JPanel implements KeyListener {
 		Graphics2D g2d = (Graphics2D) g;
 		
 		// Check background image exists (black background otherwise)
-		if (background != null) {
-			g2d.drawImage(background, 0, 0, GAME_WIDTH, GAME_HEIGHT, this);
+		if (backgroundImg != null) {
+			g2d.drawImage(backgroundImg, 0, 0, GAME_WIDTH, GAME_HEIGHT, this);
 		}
 				
 		// Asteroids
 		synchronized(asteroids) {
 			// Goes through all the asteroids that have been added
 			for (Asteroid a : asteroids) {
-				g2d.setColor(Color.GRAY);
-				g2d.fill(a.drawAsteroid());
+				g2d.setClip(a.drawAsteroid());
+				g2d.drawImage(asteroidImg, a.getXCoordinate(), a.getYCoordinate(), null);
 			}
+			// Set the clipper back to original from asteroid shape
+			g2d.setClip(null);
 		}
 		
 		if (isGameRunning) {
@@ -95,12 +94,13 @@ public class GUIPanel extends JPanel implements KeyListener {
 			final int LEVEL_LIVES_POS_Y = 20;
 			
 			// Target
-			g2d.setColor(Color.YELLOW);
-			g2d.fill(target.drawTarget());
+			g2d.setClip(target.drawTarget());
+			g2d.drawImage(targetImg, target.getXCoordinate(), target.getYCoordinate(), null);
+			g2d.setClip(null);
 			
 			// Player
-			g2d.setColor(Color.RED);
-			g2d.fill(player.drawPlayer());
+			//g2d.fill(player.drawPlayer());
+			g2d.drawImage(spaceshipImg, player.getXCoord(), player.getYCoord(), null);
 			
 			// Level and lives display
 			g2d.setColor(Color.WHITE);
@@ -119,6 +119,18 @@ public class GUIPanel extends JPanel implements KeyListener {
 			g2d.setColor(Color.YELLOW);
 			g2d.drawString("LEVEL " + (level-1), END_GAME_TITLE_POS_X + 220, END_GAME_TITLE_POS_Y + 100);
 			
+		}
+	}
+	
+	public void loadImages() {
+		// Set the required images for use in-game
+		try {
+			asteroidImg = ImageIO.read(new File("./src/images/asteroid.jpg"));
+			backgroundImg = ImageIO.read(new File("./src/images/background.jpg"));
+			targetImg = ImageIO.read(new File("./src/images/target.jpg"));
+			spaceshipImg = ImageIO.read(new File("./src/images/spaceship.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	

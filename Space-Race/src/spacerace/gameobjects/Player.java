@@ -28,7 +28,7 @@ public class Player {
 	private int lives = 3; //use this to set how many lives player has at start of game
 	private Boolean invincible = false;
 	
-	private final int SPEED = 2; //how fast player should move
+	private final int SPEED = 1; //how fast player should move
 	
 	//constructor, parameters are coordinates of where to spawn player
 	public Player(int x, int y){

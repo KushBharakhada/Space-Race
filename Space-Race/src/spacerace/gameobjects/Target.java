@@ -25,6 +25,14 @@ public class Target {
 		yCoordinate = y;
 	}
 	
+	public int getXCoordinate() {
+		return this.xCoordinate;
+	}
+	
+	public int getYCoordinate() {
+		return this.yCoordinate;
+	}
+	
 	public Ellipse2D drawTarget() {
 		// Creates a 2D target
 		return new Ellipse2D.Double(xCoordinate, yCoordinate, TARGET_SIZE_WIDTH, TARGET_SIZE_HEIGHT);

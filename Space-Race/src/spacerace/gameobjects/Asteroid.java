@@ -17,10 +17,10 @@ public class Asteroid {
 	// Instance variables
 	
 	public static final int ASTEROID_SIZE = 15;
-	private double xCoordinate;
-	private double yCoordinate;
+	private int xCoordinate;
+	private int yCoordinate;
 	private int xIncrement;
-	private double spawnSide;
+	private int spawnSide;
 	
 	// Constructor
 	public Asteroid(int speed) {
@@ -36,13 +36,13 @@ public class Asteroid {
 		return this.xIncrement;
 	}
 	
-	public double randomYCoordinate() {
+	public int randomYCoordinate() {
 		// Spawn asteroid randomly on y axis
 		double random = Math.random();
-		return random * GUIPanel.GAME_HEIGHT;		
+		return (int)(random * GUIPanel.GAME_HEIGHT);		
 	}
 	
-	public double spawnLeftOrRight() {
+	public int spawnLeftOrRight() {
 		Random random = new Random();
 		// Generate a random boolean to determine whether asteroid
 		// starts on left or right of screen
@@ -56,8 +56,16 @@ public class Asteroid {
 	public Ellipse2D drawAsteroid() {		
 		// Creates a 2D asteroid
 		return new Ellipse2D.Double(xCoordinate, yCoordinate, ASTEROID_SIZE, ASTEROID_SIZE);
-		
 	}
+	
+	public int getXCoordinate() {
+		return this.xCoordinate;
+	}
+	
+	public int getYCoordinate() {
+		return this.yCoordinate;
+	}
+
 	
 	public void move() {
 		// Adjusting the position of the asteroid in each frame
