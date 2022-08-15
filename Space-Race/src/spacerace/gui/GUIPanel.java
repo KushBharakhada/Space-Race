@@ -70,6 +70,8 @@ public class GUIPanel extends JPanel implements KeyListener {
 			}
 		}
 		
+		g2d.setColor(Color.WHITE);
+		g2d.drawString(("Lives: " + player.getLives()), 10, 20);
 	}
 	
 	public void launchAsteroid(int speed) {
@@ -127,9 +129,16 @@ public class GUIPanel extends JPanel implements KeyListener {
 		//check collision with asteroids
 		for (Asteroid asteroid : asteroids) {
 			Ellipse2D asteroidHitBox = asteroid.drawAsteroid();
-			if (asteroidHitBox.intersects(playerHurtBox)) {
-				System.out.println("GAME OVER");
-				stopTimers();
+			if (asteroidHitBox.intersects(playerHurtBox) && !player.getInvincible()) {
+				System.out.println("Life lost");
+				player.setLives(player.getLives() - 1);
+				if (player.getLives() == 0) {
+					stopTimers();
+				}
+				else {
+					System.out.println("remaining lives: " + player.getLives());
+					playerInvincibility();
+				}
 			}
 		}
 		
@@ -140,8 +149,20 @@ public class GUIPanel extends JPanel implements KeyListener {
 		}
 	}
 	
+	public void playerInvincibility() {
+		TimerTask setInvincibility = new TimerTask() {
+			public void run() {
+				player.setInvinclible(false);
+			}
+		};
+		player.setInvinclible(true);
+		Timer invincibleTimer = new Timer();
+		invincibleTimer.schedule(setInvincibility, 1000);
+	}
+	
 	//used to stop player and generation of new asteroids during a game over+
 	public void stopTimers() {
+		System.out.println("Game Over");
 		asteroidTimer.cancel();
 		playerTimer.cancel();
 	}
