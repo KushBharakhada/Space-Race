@@ -52,10 +52,14 @@ public class GUIPanel extends JPanel implements KeyListener {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
-		player.draw(g);
+		
 		g2d.setColor(Color.YELLOW);
 		g2d.fill(target.drawTarget());
-		// Control access of multiple threads to the array list
+		
+		g2d.setColor(Color.RED);
+		g2d.fill(player.drawPlayer());
+		
+		// Control access drawPlayer multiple threads to the array list
 		synchronized(asteroids) {
 			// Goes through all the asteroids that have been added
 			for (Asteroid a : asteroids) {

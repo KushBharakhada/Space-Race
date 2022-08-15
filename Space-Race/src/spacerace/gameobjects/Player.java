@@ -111,11 +111,6 @@ public class Player {
 	public int calculateDiagonal(int speed) { 
 		return (int)Math.floor(Math.sqrt(2 * (speed ^ 2)));
 	}
-	
-	public void draw(Graphics g) {
-		g.setColor(getColor());
-		g.fillRect(getXCoord(), getYCoord(), getWidth(), getHeight());	
-	}
 
 	public void keyReleased(KeyEvent e) {
 		//up and down
@@ -151,7 +146,7 @@ public class Player {
 		
 	}
 	
-	public Rectangle getRectangle() {
+	public Rectangle drawPlayer() {
 		return new Rectangle(getXCoord(), getYCoord(), getWidth(), getHeight());
 	}
 	
