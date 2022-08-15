@@ -173,10 +173,12 @@ public class GUIPanel extends JPanel implements KeyListener {
 		// Delay on player, determines player speed
     	TimerTask task = new TimerTask() {
 			public void run() {
+				checkPlayerGraphic();
 				player.setXCoord(player.getXCoord() + player.getXSpeed());
 				player.setYCoord(player.getYCoord() + player.getYSpeed());
 				player.checkOutOfBounds();
 				checkCollision();
+				
 			}
 		};
 		playerTimer = new Timer();
@@ -259,6 +261,69 @@ public class GUIPanel extends JPanel implements KeyListener {
 	    	coords[1] = yCoord;
 	    	
 	    return coords;
+	}
+	
+	public void checkPlayerGraphic() {
+		
+		final int HEIGHT_ROTATION = player.getHeight() / 2;
+		final int WIDTH_ROTATION = player.getWidth() / 2;
+		
+		
+		//creates a clone of the original image
+		BufferedImage source = null;
+		try {
+			source = ImageIO.read(new File("./src/images/spaceship.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		//steps before rotation (creating a blank image and translating it)
+		BufferedImage dest = new BufferedImage(player.getHeight(), player.getWidth(), source.getType());
+		Graphics2D graphics2D = dest.createGraphics();
+		graphics2D.translate((player.getHeight() - player.getWidth()) / 2, (player.getHeight() - player.getWidth()) / 2);
+		
+		double xSpeed = player.getXSpeed();
+		double ySpeed = player.getYSpeed();
+		
+		//depending on current direction player is travelling, perform specific rotation
+		//right
+		if (xSpeed > 0 && ySpeed == 0) {
+		    rotateImage(graphics2D, Math.PI / 2);
+		}
+		//left
+		else if (xSpeed < 0 && ySpeed == 0) {
+			rotateImage(graphics2D, -Math.PI / 2);
+		}
+		//up
+		else if (ySpeed < 0 && xSpeed == 0) {
+			rotateImage(graphics2D, 0);
+		}
+		//down
+		else if (ySpeed > 0 && xSpeed == 0) {
+			rotateImage(graphics2D, Math.PI);
+		}
+		//down-right
+		else if (ySpeed > 0 && xSpeed > 0) {
+			rotateImage(graphics2D, Math.PI / 1.35);
+		}
+		//down-left
+		else if (ySpeed > 0 && xSpeed < 0) {
+			rotateImage(graphics2D, -Math.PI / 1.35);
+		}
+		//up-right
+		else if (ySpeed < 0 && xSpeed > 0) {
+			rotateImage(graphics2D, Math.PI / 4);
+		}
+		//up-left
+		else if (ySpeed < 0 && xSpeed < 0) {
+			rotateImage(graphics2D, -Math.PI / 4);
+		}
+		graphics2D.drawRenderedImage(source, null);
+		spaceshipImg = dest;
+	}
+	
+	public void rotateImage(Graphics2D image, double rotation) {
+		image.rotate(rotation, player.getHeight() / 2, player.getWidth() / 2);
 	}
 		
 	public void launchGame() {

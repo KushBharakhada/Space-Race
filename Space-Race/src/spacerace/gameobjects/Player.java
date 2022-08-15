@@ -2,6 +2,12 @@ package spacerace.gameobjects;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 import spacerace.gui.GUIPanel;
 
 /**
@@ -27,6 +33,8 @@ public class Player {
 	private final int HEIGHT = 20;
 	private int lives = 3; //use this to set how many lives player has at start of game
 	private Boolean invincible = false;
+	private BufferedImage spaceshipImg;
+	
 	
 	private final int SPEED = 1; //how fast player should move
 	
@@ -142,7 +150,6 @@ public class Player {
 			setYCoord((int)(GUIPanel.GAME_HEIGHT - getHeight()));
 		}
 		//System.out.println(getXCoord() + "," + getYCoord());
-		
 	}
 	
 	public Rectangle drawPlayer() {
