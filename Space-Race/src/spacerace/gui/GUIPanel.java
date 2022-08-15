@@ -36,6 +36,8 @@ public class GUIPanel extends JPanel implements KeyListener {
 	private ArrayList<Thread> threads = new ArrayList<>();
 	private Player player;
 	private Target target;
+	private Timer asteroidTimer;
+	private Timer playerTimer;
 	
 	private int asteroidSpeed = 1;
 	private long asteroidLaunchRate = 400L;
@@ -84,35 +86,31 @@ public class GUIPanel extends JPanel implements KeyListener {
 	}
 	
 	public void launchAsteroidsWithDelay() {
-		if (isGameRunning) {
-			// How often the asteroids are launched
-	    	TimerTask task = new TimerTask() {
-				public void run() {
-					launchAsteroid(asteroidSpeed);
-					if (!threads.get(0).isAlive()) {
-						threads.remove(0);
-						asteroids.remove(0);
-					}
+		// How often the asteroids are launched
+    	TimerTask task = new TimerTask() {
+			public void run() {
+				launchAsteroid(asteroidSpeed);
+				if (!threads.get(0).isAlive()) {
+					threads.remove(0);
+					asteroids.remove(0);
 				}
-			};
-			Timer timer = new Timer();
-			timer.scheduleAtFixedRate(task, 0, asteroidLaunchRate);
-		}
+			}
+		};
+		asteroidTimer = new Timer();
+		asteroidTimer.scheduleAtFixedRate(task, 0, asteroidLaunchRate);
     }
 	
 	public void movePlayer() {
-		if (isGameRunning) {
-			// Delay on player, determines player speed
-	    	TimerTask task = new TimerTask() {
-				public void run() {
-					player.setXCoord(player.getXCoord() + player.getXSpeed());
-					player.setYCoord(player.getYCoord() + player.getYSpeed());
-					player.checkOutOfBounds();
-				}
-			};
-			Timer timer = new Timer();
-			timer.scheduleAtFixedRate(task, 0, PLAYER_REFRESH_RATE);
-		}
+		// Delay on player, determines player speed
+    	TimerTask task = new TimerTask() {
+			public void run() {
+				player.setXCoord(player.getXCoord() + player.getXSpeed());
+				player.setYCoord(player.getYCoord() + player.getYSpeed());
+				player.checkOutOfBounds();
+			}
+		};
+		playerTimer = new Timer();
+		playerTimer.scheduleAtFixedRate(task, 0, PLAYER_REFRESH_RATE);	
     }
 		
 	public void launchGame() {
@@ -120,7 +118,9 @@ public class GUIPanel extends JPanel implements KeyListener {
 		player = new Player(GUIFrame.GAME_WIDTH/2, GUIFrame.GAME_HEIGHT-100);
 		target = new Target(200, 200);
 
+		// Launches asteroids at a constant rate
         launchAsteroidsWithDelay();
+        // Allows the player to move
         movePlayer();
 	}
 
