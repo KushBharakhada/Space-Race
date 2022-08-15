@@ -39,16 +39,23 @@ public class GUIPanel extends JPanel implements KeyListener {
 	private Timer asteroidTimer;
 	private Timer playerTimer;
 	
-	private int asteroidSpeed = 1;
-	private long asteroidLaunchRate = 400L;
-	private final long PLAYER_REFRESH_RATE = 8L;
-	private boolean isGameRunning = true;
+	private int asteroidSpeed;
+	private long asteroidLaunchRate;
+	private final long PLAYER_REFRESH_RATE;
+	private boolean isGameRunning;
+	private int level;
 
 	public GUIPanel() {
 		this.setBackground(Color.BLACK);
 		// Created player at bottom of screen
 	    player = new Player(GUIFrame.GAME_WIDTH/2, GUIFrame.GAME_HEIGHT-100);
 		target = new Target(200, 200);
+		
+		asteroidSpeed = 1;
+		asteroidLaunchRate = 200L;
+		PLAYER_REFRESH_RATE = 8L;
+		isGameRunning = true;
+		level = 1;
     }
 	
 	public void paintComponent(Graphics g) {
@@ -121,29 +128,48 @@ public class GUIPanel extends JPanel implements KeyListener {
     }
 	
 	//used to check collision between player and all asteroids
-	public void checkCollision() {
-		Rectangle playerHurtBox = player.drawPlayer();
-		
+	public void checkCollision() {		
 		//check collision with asteroids
 		synchronized(asteroids) {
 			for (Asteroid asteroid : asteroids) {
-				if (asteroid.drawAsteroid().intersects(playerHurtBox)) {
+				if (asteroid.drawAsteroid().intersects(player.drawPlayer())) {
 					System.out.println("GAME OVER");
-					stopTimers();
+					endGame();
 				}
 			}
 		}
 		
 		//check collision with target
-		if (target.drawTarget().intersects(playerHurtBox)) {
+		if (target.drawTarget().intersects(player.drawPlayer())) {
+		    increaseLevelAndDifficulty();
 			System.out.println("target hit");
 		}
 	}
 	
+	public void increaseLevelAndDifficulty() {
+		level++;
+		asteroidSpeed++;
+		
+		// Move the target to a new position
+		int[] coords = randomCoords();
+		target = new Target(coords[0], coords[1]);
+	}
+	
 	//used to stop player and generation of new asteroids during a game over+
-	public void stopTimers() {
+	public void endGame() {
+		// Time stops the asteroids and player movement
 		asteroidTimer.cancel();
 		playerTimer.cancel();
+		isGameRunning = false;
+	}
+	
+	public int[] randomCoords() {
+		int[] coords = new int[2];
+		// Random x coordinate
+	    coords[0] = (int)(Math.random() * GUIFrame.GAME_HEIGHT);	
+	    // Random y coordinate
+	    coords[1] = (int)(Math.random() * GUIFrame.GAME_WIDTH);
+	    return coords;
 	}
 		
 	public void launchGame() {
