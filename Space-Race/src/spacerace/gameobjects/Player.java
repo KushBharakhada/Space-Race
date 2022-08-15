@@ -27,7 +27,6 @@ public class Player {
 	private final int width = 20;
 	private final int height = 20;
 	private int lives = 1;
-	private Color color = Color.red;
 	
 	//JFrame coordinates are weird, the correction ensures that the player never goes out of bounds
 	private final double WIDTH_CORRECTION = 1.8;
@@ -75,14 +74,6 @@ public class Player {
 	
 	public int getLives() {
 		return this.lives;
-	}
-	
-	public Color getColor() {
-		return this.color;
-	}
-	
-	public void setColor(Color color) {
-		this.color = color;
 	}
 	
 	//borders are a bit weird because the player appears to be drawn at a strange position (not border)

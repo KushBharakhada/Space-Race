@@ -126,6 +126,7 @@ public class GUIPanel extends JPanel implements KeyListener {
         launchAsteroidsWithDelay();
         // Allows the player to move
         movePlayer();
+        
 	}
 
 	@Override
