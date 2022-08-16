@@ -318,6 +318,9 @@ public class GUIPanel extends JPanel implements KeyListener {
 		else if (ySpeed < 0 && xSpeed < 0) {
 			rotateImage(graphics2D, -Math.PI / 4);
 		}
+		else {
+			dest = spaceshipImg;
+		}
 		graphics2D.drawRenderedImage(source, null);
 		spaceshipImg = dest;
 	}
