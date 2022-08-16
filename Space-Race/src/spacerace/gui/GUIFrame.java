@@ -19,8 +19,10 @@ public class GUIFrame extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Space Race");
         GUIPanel panel = new GUIPanel();
+        StartScreen start = new StartScreen();
         this.setResizable(false);    
-        this.add(panel);  
+        this.add(start);
+        //this.add(panel);  
         this.pack();
         this.setVisible(true);
     }
