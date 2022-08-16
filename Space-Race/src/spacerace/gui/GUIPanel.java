@@ -272,7 +272,12 @@ public class GUIPanel extends JPanel implements KeyListener {
 		//creates a clone of the original image
 		BufferedImage source = null;
 		try {
-			source = ImageIO.read(new File("./src/images/spaceship.png"));
+			if (player.getInvincible()) {
+				source = ImageIO.read(new File("./src/images/dead-spaceship.png"));
+			}
+			else {
+				source = ImageIO.read(new File("./src/images/spaceship.png"));
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
