@@ -20,11 +20,11 @@ public class Player {
 	private int ySpeed;
 	public static final int WIDTH = 20;
 	public static final int HEIGHT = 20;
-	private int lives = 3; //use this to set how many lives player has at start of game
+	private int lives = 1; //use this to set how many lives player has at start of game
 	private Boolean invincible = false;
 	
 	
-	private final int SPEED = 1; //how fast player should move
+	private final int SPEED = 3; //how fast player should move
 	
 	//constructor, parameters are coordinates of where to spawn player
 	public Player(int x, int y){

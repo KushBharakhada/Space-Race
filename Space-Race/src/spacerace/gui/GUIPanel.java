@@ -23,6 +23,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import spacerace.gameobjects.*;
+import spacerace.soundeffects.SoundEffects;
 
 /**
  * GUIPanel.java
@@ -46,6 +47,7 @@ public class GUIPanel extends JPanel implements KeyListener {
 	private Target target;
 	private Timer asteroidTimer;
 	private Timer playerTimer;
+	private SoundEffects soundEffects;
 	
 	private BufferedImage asteroidImg;
 	private BufferedImage targetImg;
@@ -63,6 +65,7 @@ public class GUIPanel extends JPanel implements KeyListener {
 		this.addKeyListener(this);
         this.setFocusable(true);
 		this.setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
+		soundEffects = new SoundEffects();
 		
 		// Initial position of player and target
 	    player = new Player(GAME_WIDTH / 2, GAME_HEIGHT - 100);
@@ -193,7 +196,7 @@ public class GUIPanel extends JPanel implements KeyListener {
 	public void checkCollision() {
 		Rectangle playerHurtBox = player.drawPlayer();
 		
-		//check collision with asteroids	
+		//check collision with asteroids
 		synchronized(asteroids) {
 			for (Asteroid asteroid : asteroids) {
 				Ellipse2D asteroidHitBox = asteroid.drawAsteroid();
@@ -201,10 +204,12 @@ public class GUIPanel extends JPanel implements KeyListener {
 					// Decrease player life and end game if 0 lives
 					player.setLives(player.getLives() - 1);
 					if (player.getLives() == 0) {
+						soundEffects.getGameOverSound().start();
 						endGame();
 					}
 					else {
 						// Temporary player timeout
+						soundEffects.getExplosionSound().start();
 						playerInvincibility();
 					}
 				}
@@ -213,6 +218,7 @@ public class GUIPanel extends JPanel implements KeyListener {
 		
 		//check collision with target
 		if (target.drawTarget().intersects(player.drawPlayer())) {
+			soundEffects.getLevelUpSound().start();
 		    increaseLevelAndDifficulty();
 		}
 	}
@@ -335,6 +341,7 @@ public class GUIPanel extends JPanel implements KeyListener {
 	}
 		
 	public void launchGame() {
+		soundEffects.getStartGameSound().start();
 		// Launches asteroids at a constant rate
         launchAsteroidsWithDelay();
         // Allows the player to move
