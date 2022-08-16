@@ -58,7 +58,7 @@ public class GUIPanel extends JPanel implements KeyListener {
 	private final long PLAYER_REFRESH_RATE = 8L;
 	private boolean isGameRunning = true;
 	private int level = 1;
-
+	
 	public GUIPanel() {
 		this.addKeyListener(this);
         this.setFocusable(true);

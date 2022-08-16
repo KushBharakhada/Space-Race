@@ -1,5 +1,8 @@
 package spacerace.gui;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.*;
 
 /**
@@ -10,20 +13,48 @@ import javax.swing.*;
  * @author Kush Bharakhada and James March
  */
 
-public class GUIFrame extends JFrame {
+public class GUIFrame extends JFrame implements KeyListener{
 	
 	private static final long serialVersionUID = 1L;	
-
+	private StartScreen start;
+	
 	public GUIFrame() {
         // Setting up the frame
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Space Race");
-        GUIPanel panel = new GUIPanel();
-        this.setResizable(false);    
-        this.add(panel);  
+        this.setResizable(false);  
+        start = new StartScreen();
+        this.add(start); 
         this.pack();
         this.setVisible(true);
+        this.addKeyListener(this);
+        //this.setFocusable(true);
     }
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			System.out.println("Start Game");
+			start.setVisible(false);
+			this.removeKeyListener(this);
+			GUIPanel panel = new GUIPanel();
+			this.add(panel);
+			
+		}
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }
