@@ -18,8 +18,8 @@ public class Player {
 	private int y;
 	private int xSpeed;
 	private int ySpeed;
-	private final int WIDTH = 20;
-	private final int HEIGHT = 20;
+	public static final int WIDTH = 20;
+	public static final int HEIGHT = 20;
 	private int lives = 3; //use this to set how many lives player has at start of game
 	private Boolean invincible = false;
 	

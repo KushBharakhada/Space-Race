@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -19,6 +20,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import spacerace.gameobjects.*;
 
@@ -49,6 +51,7 @@ public class GUIPanel extends JPanel implements KeyListener {
 	private BufferedImage targetImg;
 	private BufferedImage spaceshipImg;
 	private BufferedImage backgroundImg;
+	private Image explosionImg;
 	
 	private int asteroidSpeed = 1;
 	private long asteroidLaunchRate = 200L;
@@ -72,18 +75,22 @@ public class GUIPanel extends JPanel implements KeyListener {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
-		
-		// Check background image exists (black background otherwise)
-		if (backgroundImg != null) {
-			g2d.drawImage(backgroundImg, 0, 0, GAME_WIDTH, GAME_HEIGHT, this);
-		}
 				
+		// Background
+		g2d.drawImage(backgroundImg, 0, 0, GAME_WIDTH, GAME_HEIGHT, this);
+		
+		// Player
+		if (!isGameRunning)
+			g2d.drawImage(explosionImg, player.getXCoord(), player.getYCoord(), Player.WIDTH, Player.HEIGHT, this);
+		else
+			g2d.drawImage(spaceshipImg, player.getXCoord(), player.getYCoord(), this);
+		
 		// Asteroids
 		synchronized(asteroids) {
 			// Goes through all the asteroids that have been added
 			for (Asteroid a : asteroids) {
 				g2d.setClip(a.drawAsteroid());
-				g2d.drawImage(asteroidImg, a.getXCoordinate(), a.getYCoordinate(), null);
+				g2d.drawImage(asteroidImg, a.getXCoordinate(), a.getYCoordinate(), this);
 			}
 			// Set the clipper back to original from asteroid shape
 			g2d.setClip(null);
@@ -95,19 +102,15 @@ public class GUIPanel extends JPanel implements KeyListener {
 			
 			// Target
 			g2d.setClip(target.drawTarget());
-			g2d.drawImage(targetImg, target.getXCoordinate(), target.getYCoordinate(), null);
+			g2d.drawImage(targetImg, target.getXCoordinate(), target.getYCoordinate(), this);
 			g2d.setClip(null);
-			
-			// Player
-			//g2d.fill(player.drawPlayer());
-			g2d.drawImage(spaceshipImg, player.getXCoord(), player.getYCoord(), null);
-			
+						
 			// Level and lives display
 			g2d.setColor(Color.WHITE);
 			g2d.drawString(("Lives: " + player.getLives()), LEVEL_LIVES_POS_X, LEVEL_LIVES_POS_Y);
 			g2d.drawString(("Level: " + level), LEVEL_LIVES_POS_X, LEVEL_LIVES_POS_Y + 20);
 		}
-		
+				
 		// End game display
 		if (!isGameRunning) {
 			final int END_GAME_TITLE_POS_X = 75;
@@ -129,6 +132,7 @@ public class GUIPanel extends JPanel implements KeyListener {
 			backgroundImg = ImageIO.read(new File("./src/images/background.jpg"));
 			targetImg = ImageIO.read(new File("./src/images/target.jpg"));
 			spaceshipImg = ImageIO.read(new File("./src/images/spaceship.png"));
+			explosionImg = new ImageIcon("./src/images/explosion.gif").getImage();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -137,7 +141,7 @@ public class GUIPanel extends JPanel implements KeyListener {
 	public void launchAsteroid(int speed) {
 		// Creating an asteroid object
 		Asteroid a = new Asteroid(speed);
-		
+	
 		// Reliable communication between threads
 		// Control access of multiple threads to the array list
 		synchronized(asteroids) {
@@ -272,7 +276,7 @@ public class GUIPanel extends JPanel implements KeyListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+				
 		//steps before rotation (creating a blank image and translating it)
 		BufferedImage dest = new BufferedImage(player.getHeight(), player.getWidth(), source.getType());
 		Graphics2D graphics2D = dest.createGraphics();
