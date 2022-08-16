@@ -2,7 +2,6 @@ package spacerace.gui;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
 import javax.swing.*;
 
 /**
@@ -39,12 +38,13 @@ public class GUIFrame extends JFrame implements KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		//when enter is selected, removes start screen and plays game
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			System.out.println("Start Game");
 			start.setVisible(false);
 			this.removeKeyListener(this);
 			GUIPanel panel = new GUIPanel();
 			this.add(panel);
+			this.addKeyListener(panel);
 			
 		}
 		
