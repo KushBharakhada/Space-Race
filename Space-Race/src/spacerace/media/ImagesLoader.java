@@ -36,14 +36,14 @@ public class ImagesLoader {
 	private void loadImages() {
 		// Set the required images for use in-game
 		try {
-			asteroidImg = ImageIO.read(new File("./src/images/asteroid.jpg"));
-			backgroundImg = ImageIO.read(new File("./src/images/background.jpg"));
-			targetImg = ImageIO.read(new File("./src/images/target.jpg"));
-			spaceshipImg = ImageIO.read(new File("./src/images/spaceship.png"));
-			redSpaceshipImg = ImageIO.read(new File("./src/images/red-spaceship.png"));
-			rotatableSpaceshipImg = ImageIO.read(new File("./src/images/spaceship.png"));
-			rotatableRedSpaceshipImg = ImageIO.read(new File("./src/images/red-spaceship.png"));
-			explosionImg = new ImageIcon("./src/images/explosion.gif").getImage();
+			asteroidImg = ImageIO.read(getClass().getResource("/images/asteroid.jpg"));
+			backgroundImg = ImageIO.read(getClass().getResource("/images/background.jpg"));
+			targetImg = ImageIO.read(getClass().getResource("/images/target.jpg"));
+			spaceshipImg = ImageIO.read(getClass().getResource("/images/spaceship.png"));
+			redSpaceshipImg = ImageIO.read(getClass().getResource("/images/red-spaceship.png"));
+			rotatableSpaceshipImg = ImageIO.read(getClass().getResource("/images/spaceship.png"));
+			rotatableRedSpaceshipImg = ImageIO.read(getClass().getResource("/images/red-spaceship.png"));
+			explosionImg = new ImageIcon(getClass().getResource("/images/explosion.gif")).getImage();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

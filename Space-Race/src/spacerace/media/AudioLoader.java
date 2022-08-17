@@ -40,29 +40,29 @@ public class AudioLoader {
 	}
 	
 	private void loadGameOverSound() throws Exception {
-		File gameOver = new File("./src/audio/gameover.wav");
-		AudioInputStream audioStream = AudioSystem.getAudioInputStream(gameOver);
+		AudioInputStream audioStream = AudioSystem.getAudioInputStream(
+				getClass().getResourceAsStream("/audio/gameover.wav"));
 		gameOverSound = AudioSystem.getClip();
 		gameOverSound.open(audioStream);
 	}
 		
 	private void loadLevelUpSound() throws Exception {
-		File levelUp = new File("./src/audio/levelup.wav");
-		AudioInputStream audioStream = AudioSystem.getAudioInputStream(levelUp);
+		AudioInputStream audioStream = AudioSystem.getAudioInputStream(
+				getClass().getResourceAsStream("/audio/levelup.wav"));
 		levelUpSound = AudioSystem.getClip();
 		levelUpSound.open(audioStream);
 	}
 	
 	private void loadStartGameSound() throws Exception {
-		File start = new File("./src/audio/start.wav");
-		AudioInputStream audioStream = AudioSystem.getAudioInputStream(start);
+		AudioInputStream audioStream = AudioSystem.getAudioInputStream(
+				getClass().getResourceAsStream("/audio/start.wav"));
 		startGameSound = AudioSystem.getClip();
 		startGameSound.open(audioStream);
 	}
 	
 	private void loadExplosionSound() throws Exception {
-		File impact = new File("./src/audio/explosion.wav");
-		AudioInputStream audioStream = AudioSystem.getAudioInputStream(impact);
+		AudioInputStream audioStream = AudioSystem.getAudioInputStream(
+				getClass().getResourceAsStream("/audio/explosion.wav"));
 		explosionSound = AudioSystem.getClip();
 		explosionSound.open(audioStream);
 	}

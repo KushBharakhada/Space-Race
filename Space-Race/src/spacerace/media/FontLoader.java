@@ -2,7 +2,6 @@ package spacerace.media;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 /**
@@ -28,18 +27,15 @@ public class FontLoader {
 	private void loadFonts() {
 		try {	
 			// Title
-			titleFont = Font.createFont(Font.TRUETYPE_FONT,
-					new FileInputStream("./src/fonts/AquireBold-8Ma60.otf"));
+			titleFont = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/AquireBold-8Ma60.otf"));
 			titleFont  = titleFont.deriveFont(Font.BOLD, 80);
 			
 			// Rest of the Text
-			textFont = Font.createFont(Font.TRUETYPE_FONT,
-					new FileInputStream("./src/fonts/ConnectionIii-Rj3W.otf"));
+			textFont = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/ConnectionIii-Rj3W.otf"));
 			textFont  = textFont.deriveFont(Font.PLAIN, 35);
 			
 			// Credits
-			creditsFont = Font.createFont(Font.TRUETYPE_FONT,
-					new FileInputStream("./src/fonts/ConnectionIii-Rj3W.otf"));
+			creditsFont = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/ConnectionIii-Rj3W.otf"));
 			creditsFont  = creditsFont.deriveFont(Font.PLAIN, 20);
 			
 		} catch (IOException e) {
