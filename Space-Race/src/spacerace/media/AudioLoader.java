@@ -1,6 +1,7 @@
 package spacerace.media;
 
-import java.io.File;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -40,29 +41,29 @@ public class AudioLoader {
 	}
 	
 	private void loadGameOverSound() throws Exception {
-		AudioInputStream audioStream = AudioSystem.getAudioInputStream(
-				getClass().getResourceAsStream("/audio/gameover.wav"));
+		InputStream bufferedIn = new BufferedInputStream(getClass().getResourceAsStream("/audio/gameover.wav"));
+		AudioInputStream audioStream = AudioSystem.getAudioInputStream(bufferedIn);
 		gameOverSound = AudioSystem.getClip();
 		gameOverSound.open(audioStream);
 	}
 		
 	private void loadLevelUpSound() throws Exception {
-		AudioInputStream audioStream = AudioSystem.getAudioInputStream(
-				getClass().getResourceAsStream("/audio/levelup.wav"));
+		InputStream bufferedIn = new BufferedInputStream(getClass().getResourceAsStream("/audio/levelup.wav"));
+		AudioInputStream audioStream = AudioSystem.getAudioInputStream(bufferedIn);
 		levelUpSound = AudioSystem.getClip();
 		levelUpSound.open(audioStream);
 	}
 	
 	private void loadStartGameSound() throws Exception {
-		AudioInputStream audioStream = AudioSystem.getAudioInputStream(
-				getClass().getResourceAsStream("/audio/start.wav"));
+		InputStream bufferedIn = new BufferedInputStream(getClass().getResourceAsStream("/audio/start.wav"));
+		AudioInputStream audioStream = AudioSystem.getAudioInputStream(bufferedIn);
 		startGameSound = AudioSystem.getClip();
 		startGameSound.open(audioStream);
 	}
 	
 	private void loadExplosionSound() throws Exception {
-		AudioInputStream audioStream = AudioSystem.getAudioInputStream(
-				getClass().getResourceAsStream("/audio/explosion.wav"));
+		InputStream bufferedIn = new BufferedInputStream(getClass().getResourceAsStream("/audio/explosion.wav"));
+		AudioInputStream audioStream = AudioSystem.getAudioInputStream(bufferedIn);
 		explosionSound = AudioSystem.getClip();
 		explosionSound.open(audioStream);
 	}
