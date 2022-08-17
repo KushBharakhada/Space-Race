@@ -3,6 +3,7 @@ package spacerace.gui;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.*;
+import spacerace.media.*;
 
 /**
  * GUIFrame.java
@@ -12,49 +13,45 @@ import javax.swing.*;
  * @author Kush Bharakhada and James March
  */
 
+@SuppressWarnings("serial")
 public class GUIFrame extends JFrame implements KeyListener{
 	
-	private static final long serialVersionUID = 1L;	
-	private StartScreen start;
+	// Instance Variables
+	private StartScreen startPanel;
+	private ImagesLoader images;
+	private AudioLoader audio;
 	
-	public GUIFrame() {
-        // Setting up the frame
+	// Constructor
+	public GUIFrame(ImagesLoader images, AudioLoader audio, FontLoader fonts) {		
+		// Used for GUIPanel when enter is pressed
+	    this.images = images;
+		this.audio = audio;
+		
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Space Race");
-        this.setResizable(false);  
-        start = new StartScreen();
-        this.add(start); 
+        this.setResizable(false);        
+        startPanel = new StartScreen(images, fonts);  
+        this.add(startPanel); 
         this.pack();
         this.setVisible(true);
         this.addKeyListener(this);
-        //this.setFocusable(true);
     }
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		//when enter is selected, removes start screen and plays game
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			start.setVisible(false);
+			startPanel.setVisible(false);
 			this.removeKeyListener(this);
-			GUIPanel panel = new GUIPanel();
-			this.add(panel);
-			this.addKeyListener(panel);
-			
+			GUIPanel gamePanel = new GUIPanel(images, audio);
+			this.add(gamePanel);
+			this.addKeyListener(gamePanel);
 		}
-		
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void keyReleased(KeyEvent e) {}
 	
-
+	@Override
+	public void keyTyped(KeyEvent e) {}
 }

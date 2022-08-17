@@ -7,7 +7,9 @@ import spacerace.gui.GUIPanel;
 /**
  * Asteroid.java
  *
- * An asteroid in the game.
+ * An asteroid object in the game.
+ * Aim is to avoid these asteroids. Asteroids spawn on
+ * the left or right of the screen and travel horizontally.
  *
  * @author Kush Bharakhada and James March
  */
@@ -15,7 +17,6 @@ import spacerace.gui.GUIPanel;
 public class Asteroid {
 	
 	// Instance variables
-	
 	public static final int ASTEROID_SIZE = 15;
 	private int xCoordinate;
 	private int yCoordinate;
@@ -31,18 +32,30 @@ public class Asteroid {
 		xIncrement = speed;
 	}
 	
+	// Get Methods ---
+	
 	public int getAsteroidSpeed() {
 		// Speed horizontally is determined by the xIncrement
 		return this.xIncrement;
 	}
 	
-	public int randomYCoordinate() {
+	public int getXCoordinate() {
+		return this.xCoordinate;
+	}
+	
+	public int getYCoordinate() {
+		return this.yCoordinate;
+	}
+	
+	// ---
+	
+	private int randomYCoordinate() {
 		// Spawn asteroid randomly on y axis
 		double random = Math.random();
 		return (int)(random * GUIPanel.GAME_HEIGHT);		
 	}
 	
-	public int spawnLeftOrRight() {
+	private int spawnLeftOrRight() {
 		Random random = new Random();
 		// Generate a random boolean to determine whether asteroid
 		// starts on left or right of screen
@@ -57,15 +70,6 @@ public class Asteroid {
 		// Creates a 2D asteroid
 		return new Ellipse2D.Double(xCoordinate, yCoordinate, ASTEROID_SIZE, ASTEROID_SIZE);
 	}
-	
-	public int getXCoordinate() {
-		return this.xCoordinate;
-	}
-	
-	public int getYCoordinate() {
-		return this.yCoordinate;
-	}
-
 	
 	public void move() {
 		// Adjusting the position of the asteroid in each frame

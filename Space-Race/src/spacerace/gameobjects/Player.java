@@ -7,24 +7,22 @@ import spacerace.gui.GUIPanel;
 /**
  * Player.java
  *
- * The player in the game.
+ * The player in the game. Controller by the user.
  *
  * @author Kush Bharakhada and James March
  */
 
 public class Player {
 	
+	// Instance Variables
+	public static final int PLAYER_SIZE = 20;
+	private final int PLAYER_SPEED = 1; //how fast player should move
 	private int x;
 	private int y;
 	private int xSpeed;
 	private int ySpeed;
-	public static final int WIDTH = 20;
-	public static final int HEIGHT = 20;
 	private int lives = 3; //use this to set how many lives player has at start of game
 	private Boolean invincible = false;
-	
-	
-	private final int SPEED = 1; //how fast player should move
 	
 	//constructor, parameters are coordinates of where to spawn player
 	public Player(int x, int y){
@@ -32,6 +30,7 @@ public class Player {
 		this.y = y;
 	}
 	
+	// Get and Set Methods
 	public int getXCoord() {
 		return this.x;
 	}
@@ -56,14 +55,6 @@ public class Player {
 		return this.ySpeed;
 	}
 	
-	public int getWidth() {
-		return this.WIDTH;
-	}
-	
-	public int getHeight() {
-		return this.HEIGHT;
-	}
-	
 	public int getLives() {
 		return this.lives;
 	}
@@ -80,30 +71,27 @@ public class Player {
 		this.invincible = invincible;
 	}
 	
+	// ---
+	
 	public void keyPressed(KeyEvent e) {
 		//up
 		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-			this.ySpeed = (getYCoord() - SPEED > 0) ? -SPEED : 0;
+			this.ySpeed = (getYCoord() - PLAYER_SPEED > 0) ? -PLAYER_SPEED : 0;
 		}
 		//down
 		if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-			this.ySpeed = (getYCoord() + SPEED < GUIPanel.GAME_HEIGHT - getHeight()) 
-					? SPEED : 0;
+			this.ySpeed = (getYCoord() + PLAYER_SPEED < GUIPanel.GAME_HEIGHT - PLAYER_SIZE) 
+					? PLAYER_SPEED : 0;
 		}
 		//left
 		if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
-			this.xSpeed = (getXCoord() - SPEED > 0) ? -SPEED : 0;
+			this.xSpeed = (getXCoord() - PLAYER_SPEED > 0) ? -PLAYER_SPEED : 0;
 		}
 		//right
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-			this.xSpeed = (getXCoord() + SPEED < GUIPanel.GAME_WIDTH - getWidth()) 
-				? SPEED : 0;
+			this.xSpeed = (getXCoord() + PLAYER_SPEED < GUIPanel.GAME_WIDTH - PLAYER_SIZE) 
+				? PLAYER_SPEED : 0;
 		}
-	}
-	
-	//runs Pythagorean theorem to calculate speed when going diagonally
-	public int calculateDiagonal(int speed) { 
-		return (int)Math.floor(Math.sqrt(2 * (speed ^ 2)));
 	}
 
 	public void keyReleased(KeyEvent e) {
@@ -122,26 +110,25 @@ public class Player {
 	//checks if player is about to be out of bounds, if so returns them inbounds
 	public void checkOutOfBounds() {
 		//left border
-		if (getXCoord() - SPEED < 0) {
+		if (getXCoord() - PLAYER_SPEED < 0) {
 			setXCoord(0);
 		}
 		//top border
-		if (getYCoord() - SPEED < 0) {
+		if (getYCoord() - PLAYER_SPEED < 0) {
 			setYCoord(0);
 		}
 		//right border
-		if (getXCoord() + SPEED > GUIPanel.GAME_WIDTH - getWidth()) {
-			setXCoord((int)(GUIPanel.GAME_WIDTH - getWidth()));
+		if (getXCoord() + PLAYER_SPEED > GUIPanel.GAME_WIDTH - PLAYER_SIZE) {
+			setXCoord((int)(GUIPanel.GAME_WIDTH - PLAYER_SIZE));
 		}
 		//down border
-		if (getYCoord() + SPEED > GUIPanel.GAME_HEIGHT - getHeight()) {
-			setYCoord((int)(GUIPanel.GAME_HEIGHT - getHeight()));
+		if (getYCoord() + PLAYER_SPEED > GUIPanel.GAME_HEIGHT - PLAYER_SIZE) {
+			setYCoord((int)(GUIPanel.GAME_HEIGHT - PLAYER_SIZE));
 		}
-		//System.out.println(getXCoord() + "," + getYCoord());
 	}
 	
 	public Rectangle drawPlayer() {
-		return new Rectangle(getXCoord(), getYCoord(), getWidth(), getHeight());
+		return new Rectangle(getXCoord(), getYCoord(), PLAYER_SIZE, PLAYER_SIZE);
 	}
 	
 }
